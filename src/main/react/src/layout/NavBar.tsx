@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons";
 import { MenuProps } from "antd";
 import { Menu } from "antd";
-//import { useUser } from '../UserProvider';
+import { useUser } from "../UserProvider";
 
 function NavBar() {
-  //const user = useUser();
+  const user = useUser();
   const [current, setCurrent] = useState("mail");
 
   const items: MenuProps["items"] = React.useMemo(
@@ -20,16 +20,40 @@ function NavBar() {
         key: "chat",
         icon: <SettingOutlined />,
       },
-      {
-        label: <a href="/login">Log in</a>,
-        key: "login",
-      },
-      {
-        label: <a href="/signup">Sign up</a>,
-        key: "signin",
-      },
+      ...(user == null
+        ? [
+            {
+              label: <a href="/login">Log in</a>,
+              key: "login",
+            },
+            {
+              label: <a href="/signup">Sign up</a>,
+              key: "signin",
+            },
+          ]
+        : [
+            {
+              label: (
+                <span>
+                  Hello <b>{user.userName}</b>
+                </span>
+              ),
+              key: "user_options",
+              icon: <SettingOutlined />,
+              children: [
+                {
+                  label: <a href="/changepassword">Change password</a>,
+                  key: "change_pass",
+                },
+                {
+                  label: <a href="/logout">Logout</a>,
+                  key: "logout",
+                },
+              ],
+            },
+          ]),
     ],
-    []
+    [user]
   );
 
   const onClick: MenuProps["onClick"] = (e) => {

@@ -26,7 +26,7 @@ export default function ChatContent() {
   }, []);
 
   React.useEffect(() => {
-    fetch("api/number", {
+    fetch("api/chat/number", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -37,7 +37,7 @@ export default function ChatContent() {
   }, []);
 
   const addOne = () =>
-    fetch("api/addone", {
+    fetch("api/chat/addone", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
@@ -45,7 +45,7 @@ export default function ChatContent() {
       .then((data) => console.log(data));
 
   const getUsers = () =>
-    fetch("api/users", {
+    fetch("api/chat/users", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -67,7 +67,7 @@ export default function ChatContent() {
         <div></div>
         {users.map((user) => (
           <div key={user.id}>
-            {user.id} : {user.username}
+            {user.id} : {user.userName}
           </div>
         ))}
         <div>Serwer status: {connected ? "Połączono" : "Brak połączenia"}</div>

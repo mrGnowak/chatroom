@@ -14,7 +14,7 @@ import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.repo.UserRepo;
 import com.chat.chatroom.service.CalculatorService;
 
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/chat")
 @RestController
 public class ChatController {
 

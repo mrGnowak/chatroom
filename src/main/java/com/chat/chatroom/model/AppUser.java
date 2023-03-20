@@ -14,6 +14,10 @@ public class AppUser {
     @GeneratedValue
     private Long id;
     @Column
-    private String username;
+    private String userName;
+    @Column
+    private String password;
+    @Column
+    private String email;
 
 }

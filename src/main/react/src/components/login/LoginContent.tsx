@@ -1,6 +1,7 @@
 import { Button, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
 import { useNavigate } from "react-router-dom";
+import { useRefreshUser } from "../../UserProvider";
 //import { useRefreshUser } from '../UserProvider';
 
 type LoginForm = {
@@ -9,7 +10,7 @@ type LoginForm = {
 };
 export default function LoginContent() {
   const navigate = useNavigate();
-  // const refreshUser = useRefreshUser();
+  const refreshUser = useRefreshUser();
 
   const onFinish = async (values: LoginForm) => {
     try {
@@ -22,7 +23,7 @@ export default function LoginContent() {
         }),
       });
       navigate("/");
-      //refreshUser();
+      refreshUser();
     } catch (e) {
       console.log("Wrong pass", e);
     }

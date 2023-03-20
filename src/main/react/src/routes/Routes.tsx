@@ -8,8 +8,13 @@ import LayoutChat from "../layout/LayoutChat";
 import LayoutUnauthorized from "../layout/LayoutUnauthorized";
 import LayoutLogin from "../layout/LayoutLogin";
 import LayoutSignin from "../layout/LayoutSignin";
+import { useUser } from "../UserProvider";
+import Logout from "../layout/Logout";
 
 export default function Routes() {
+  const user = useUser();
+  console.log("🚀 ~ file: Routes.tsx:12 ~ Routes ~ user:", user);
+
   const router = React.useMemo(() => {
     return createBrowserRouter([
       {
@@ -22,25 +27,33 @@ export default function Routes() {
         element: <LayoutChat />,
         errorElement: <LayoutUnauthorized />,
       },
-
-      {
-        path: "/login",
-        element: <LayoutLogin />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: "/signup",
-        element: <LayoutSignin />,
-        errorElement: <ErrorPage />,
-      },
-
-      {
-        path: "/logout",
-        //element: <Logout />,
-        errorElement: <ErrorPage />,
-      },
+      ...(user == null
+        ? [
+            {
+              path: "/login",
+              element: <LayoutLogin />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "/signup",
+              element: <LayoutSignin />,
+              errorElement: <ErrorPage />,
+            },
+          ]
+        : [
+            {
+              path: "/logout",
+              element: <Logout />,
+              errorElement: <ErrorPage />,
+            },
+            //{
+            //  path: "/changepassword",
+            //  element: <ChangePass />,
+            //  errorElement: <ErrorPage />,
+            //},
+          ]),
     ]);
-  }, []);
+  }, [user]);
 
   return <RouterProvider router={router} />;
 }
