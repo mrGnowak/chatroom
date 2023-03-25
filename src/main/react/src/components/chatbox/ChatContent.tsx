@@ -9,13 +9,14 @@ export default function ChatContent() {
   const [number, setNumber] = React.useState("10");
   const [users, setUsers] = React.useState<Users[]>([]);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
-  const [messages2, setMessages2] = React.useState<ChatMessage[]>([]);
+  //const [messages2, setMessages2] = React.useState<ChatMessage[]>([]);
   const [message, setMessage] = React.useState<string | undefined>();
   const onChange = (e: React.FormEvent<HTMLInputElement>) =>
     setMessage(e.currentTarget.value);
 
   const websocketRef = React.useRef<any>();
   const [connected, setConnected] = React.useState<boolean>(false);
+  const bottomRef = React.useRef<any>(null);
 
   React.useEffect(() => {
     websocketRef.current = new WebSocket(`ws://localhost:8080/ws/messages`);
@@ -77,13 +78,18 @@ export default function ChatContent() {
   }
 
   React.useEffect(() => {
+    // 👇️ scroll to bottom every time messages change
+    bottomRef.current?.scrollIntoView({ behavior: "auto" });
+  }, [messages]);
+
+  React.useEffect(() => {
     getUsers();
   }, []);
 
   return (
     <>
       Serwer status: {connected ? "Połączono" : "Brak połączenia"}
-      <div style={{ height: "450px", overflow: "auto" }}>
+      <div id="content-chat" style={{ height: "450px", overflow: "auto" }}>
         <div style={{ position: "sticky", bottom: 0 }}>
           <section>
             <div style={{ display: "flex", flexFlow: "column wrap" }}>
@@ -99,6 +105,7 @@ export default function ChatContent() {
                 )
               )}
             </div>
+            <div ref={bottomRef} />
           </section>
         </div>
       </div>
