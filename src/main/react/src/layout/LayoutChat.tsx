@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, theme } from "antd";
 import "./layout.css";
-import { Users } from "../components/types";
 import ChatContent from "../components/chatbox/ChatContent";
 import NavBar from "./NavBar";
 import UserContent from "../components/users/UserContent";
@@ -26,11 +19,12 @@ const LayoutChat: React.FC = () => {
         <NavBar />
       </Header>
       <Content style={{ padding: "0 50px", marginTop: "50px" }}>
-        <Layout>
+        <Layout style={{ justifyContent: "center" }}>
           <Sider
             style={{
               background: colorBgContainer,
               padding: "24px 24px",
+              height: "600px",
             }}
             width={200}
           >
@@ -39,16 +33,19 @@ const LayoutChat: React.FC = () => {
           <Content
             style={{
               padding: "24px 24px",
-              minHeight: "750px",
+              height: "600px",
               background: colorBgContainer,
               marginLeft: "10px",
+              maxWidth: "500px",
             }}
           >
             <ChatContent />
           </Content>
         </Layout>
       </Content>
-      <Footer style={{ textAlign: "center" }}>{footerContent}</Footer>
+      <Footer style={{ textAlign: "center", marginTop: "150px" }}>
+        {footerContent}
+      </Footer>
     </Layout>
   );
 };

@@ -52,9 +52,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/chat/**").authenticated()
-                .requestMatchers("/chat").authenticated()
-                .requestMatchers("/ws/number").authenticated()
+                .requestMatchers("/api/chat/**").permitAll()
+                .requestMatchers("/chat").permitAll()
+                .requestMatchers("/ws/messages").permitAll()
                 .requestMatchers("/api/getUser").authenticated()
                 .requestMatchers("/api/login/**").permitAll()
                 .anyRequest().permitAll();

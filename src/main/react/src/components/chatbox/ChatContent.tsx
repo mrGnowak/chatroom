@@ -1,18 +1,30 @@
+import { Input } from "antd";
 import React from "react";
-import { Users } from "../types";
+import { useUser } from "../../UserProvider";
+import { ChatMessage, Users } from "../types";
+import "./ChatContentStyle.css";
 
 export default function ChatContent() {
+  const user = useUser();
   const [number, setNumber] = React.useState("10");
   const [users, setUsers] = React.useState<Users[]>([]);
+  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+  const [messages2, setMessages2] = React.useState<ChatMessage[]>([]);
+  const [message, setMessage] = React.useState<string | undefined>();
+  const onChange = (e: React.FormEvent<HTMLInputElement>) =>
+    setMessage(e.currentTarget.value);
 
   const websocketRef = React.useRef<any>();
   const [connected, setConnected] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    websocketRef.current = new WebSocket(`ws://localhost:8080/ws/number`);
+    websocketRef.current = new WebSocket(`ws://localhost:8080/ws/messages`);
     const w = websocketRef.current;
     w.onmessage = (evt: any) => {
-      setNumber(evt.data);
+      console.log(evt);
+      const temMessages = JSON.parse(evt.data.toString());
+      console.log("temMessages" + temMessages);
+      setMessages(temMessages);
     };
     w.onerror = (evt: any) => {
       console.error(evt);
@@ -36,14 +48,6 @@ export default function ChatContent() {
       });
   }, []);
 
-  const addOne = () =>
-    fetch("api/chat/addone", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.text)
-      .then((data) => console.log(data));
-
   const getUsers = () =>
     fetch("api/chat/users", {
       method: "GET",
@@ -54,23 +58,58 @@ export default function ChatContent() {
         setUsers(data as Users[]);
       });
 
+  function sendMessage() {
+    if (user?.id === undefined || message === undefined || message === "") {
+      return;
+    }
+    fetch("api/chat/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: message,
+        toUser: -1,
+        senderUserId: user?.id,
+      }),
+    })
+      .then((response) => response.text)
+      .then(() => setMessage(""))
+      .then((data) => console.log(data));
+  }
+
   React.useEffect(() => {
     getUsers();
   }, []);
 
   return (
     <>
-      <div>
-        <button onClick={addOne}>dodaj jeden</button>
-        <div>Hellooo : {number} </div>
-        <div>users: </div>
-        <div></div>
-        {users.map((user) => (
-          <div key={user.id}>
-            {user.id} : {user.userName}
-          </div>
-        ))}
-        <div>Serwer status: {connected ? "Połączono" : "Brak połączenia"}</div>
+      Serwer status: {connected ? "Połączono" : "Brak połączenia"}
+      <div style={{ height: "450px", overflow: "auto" }}>
+        <div style={{ position: "sticky", bottom: 0 }}>
+          <section>
+            <div style={{ display: "flex", flexFlow: "column wrap" }}>
+              {messages?.map((message) =>
+                message?.senderUserId === user?.id ? (
+                  <div key={message.id} className="sender-style">
+                    {message.text} | sender: {message.senderUserId}
+                  </div>
+                ) : (
+                  <div key={message.id} className="getter-style">
+                    {message.text} | sender: {message.senderUserId}
+                  </div>
+                )
+              )}
+            </div>
+          </section>
+        </div>
+      </div>
+      <div style={{ marginTop: "30px", overflow: "auto" }}>
+        <Input.Search
+          enterButton="Send"
+          size="large"
+          onSearch={sendMessage}
+          onChange={onChange}
+          value={message}
+        />
       </div>
     </>
   );

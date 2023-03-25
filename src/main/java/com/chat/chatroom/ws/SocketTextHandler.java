@@ -12,7 +12,9 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.chat.chatroom.service.CalculatorService;
+import com.chat.chatroom.service.ChatService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class SocketTextHandler extends TextWebSocketHandler {
@@ -20,7 +22,10 @@ public class SocketTextHandler extends TextWebSocketHandler {
     Logger logger = LoggerFactory.getLogger(SocketTextHandler.class);
 
     @Autowired
-    public CalculatorService calculatorService;
+    public ChatService chatService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<WebSocketSession>();
 
@@ -52,7 +57,16 @@ public class SocketTextHandler extends TextWebSocketHandler {
     }
 
     private TextMessage currentStatus() {
-        return new TextMessage(calculatorService.getNumber().toString());
+        var messages = chatService.getMessages();
+
+        try {
+            var json = objectMapper.writeValueAsString(messages);
+            return new TextMessage(json);
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void sendToClient(WebSocketSession client, TextMessage message) {

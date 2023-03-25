@@ -1,4 +1,5 @@
 import "./App.css";
+import "./components/chatbox/ChatContentStyle.css";
 import Routes from "./routes/Routes";
 import { UserProvider } from "./UserProvider";
 

@@ -5,3 +5,9 @@ export type Users = {
     email: string;
   };
   
+  export type ChatMessage = {
+    id: number;
+    text: string;
+    toUser: number;
+    senderUserId: number;
+  }
