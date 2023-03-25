@@ -7,12 +7,14 @@ margin: 0.2625em;
 max-width: 60%;
 align-self: flex-start;
 }
+.content{
+    padding: 0.25em 0.75em;
+}
 
 .sender-style {
 background-color: #1677ff;
 color: white;
 border-radius: 1em;
-padding: 0.25em 0.75em;
 margin: 0.2625em;
 max-width: 60%;
 align-self: flex-end;

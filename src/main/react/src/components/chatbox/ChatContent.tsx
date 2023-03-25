@@ -1,15 +1,14 @@
-import { Input } from "antd";
+import { Avatar, Input, Tooltip } from "antd";
 import React from "react";
 import { useUser } from "../../UserProvider";
 import { ChatMessage, Users } from "../types";
 import "./ChatContentStyle.css";
+import { UserOutlined } from "@ant-design/icons";
 
 export default function ChatContent() {
   const user = useUser();
-  const [number, setNumber] = React.useState("10");
   const [users, setUsers] = React.useState<Users[]>([]);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
-  //const [messages2, setMessages2] = React.useState<ChatMessage[]>([]);
   const [message, setMessage] = React.useState<string | undefined>();
   const onChange = (e: React.FormEvent<HTMLInputElement>) =>
     setMessage(e.currentTarget.value);
@@ -23,9 +22,9 @@ export default function ChatContent() {
     const w = websocketRef.current;
     w.onmessage = (evt: any) => {
       console.log(evt);
-      const temMessages = JSON.parse(evt.data.toString());
-      console.log("temMessages" + temMessages);
-      setMessages(temMessages);
+      const tempMessages = JSON.parse(evt.data.toString());
+      console.log("tempMessages" + tempMessages);
+      setMessages(tempMessages.reverse());
     };
     w.onerror = (evt: any) => {
       console.error(evt);
@@ -38,17 +37,6 @@ export default function ChatContent() {
     };
   }, []);
 
-  React.useEffect(() => {
-    fetch("api/chat/number", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        setNumber(data);
-      });
-  }, []);
-
   const getUsers = () =>
     fetch("api/chat/users", {
       method: "GET",
@@ -58,6 +46,10 @@ export default function ChatContent() {
       .then((data) => {
         setUsers(data as Users[]);
       });
+
+  React.useEffect(() => {
+    getUsers();
+  }, []);
 
   function sendMessage() {
     if (user?.id === undefined || message === undefined || message === "") {
@@ -70,6 +62,7 @@ export default function ChatContent() {
         text: message,
         toUser: -1,
         senderUserId: user?.id,
+        senderUserName: user?.userName,
       }),
     })
       .then((response) => response.text)
@@ -82,10 +75,6 @@ export default function ChatContent() {
     bottomRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages]);
 
-  React.useEffect(() => {
-    getUsers();
-  }, []);
-
   return (
     <>
       Serwer status: {connected ? "Połączono" : "Brak połączenia"}
@@ -95,12 +84,33 @@ export default function ChatContent() {
             <div style={{ display: "flex", flexFlow: "column wrap" }}>
               {messages?.map((message) =>
                 message?.senderUserId === user?.id ? (
-                  <div key={message.id} className="sender-style">
-                    {message.text} | sender: {message.senderUserId}
+                  <div key={message.id} className="sender-style content">
+                    {message.text}
                   </div>
                 ) : (
-                  <div key={message.id} className="getter-style">
-                    {message.text} | sender: {message.senderUserId}
+                  <div key={message.id} className="content">
+                    {" "}
+                    <Tooltip
+                      placement="right"
+                      title={
+                        message.senderUserName ? message.senderUserName : " "
+                      }
+                    >
+                      <div style={{ display: "inline" }}>
+                        <Avatar
+                          size="small"
+                          icon={<UserOutlined />}
+                          style={{ marginTop: "" }}
+                        />
+                      </div>
+
+                      <div
+                        className="getter-style"
+                        style={{ display: "inline" }}
+                      >
+                        {message.text}
+                      </div>
+                    </Tooltip>
                   </div>
                 )
               )}

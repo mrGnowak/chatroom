@@ -2,6 +2,8 @@ package com.chat.chatroom.service;
 
 import org.springframework.context.annotation.Lazy;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,6 @@ public class ChatService {
 
     private List<ChatMessage> chatMessages;
 
-    @Autowired
     public ChatService(@Lazy SocketTextHandler socketTextHandler) {
         this.socketTextHandler = socketTextHandler;
     }
@@ -55,7 +56,8 @@ public class ChatService {
     }
 
     public List<ChatMessage> getMessages() {
-        chatMessages = chatMessageRepo.findAllByToUser(-1L);
+        chatMessages = chatMessageRepo.findFirst100ByToUserOrderByIdDesc(-1L);
+
         return chatMessages;
     }
 

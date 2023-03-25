@@ -19,5 +19,7 @@ public class ChatMessage {
     private Long senderUserId;
     @Column
     private Long toUser;
+    @Column
+    private String senderUserName;
 
 }

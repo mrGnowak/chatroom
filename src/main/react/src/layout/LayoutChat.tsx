@@ -26,7 +26,7 @@ const LayoutChat: React.FC = () => {
               padding: "24px 24px",
               height: "600px",
             }}
-            width={200}
+            width={250}
           >
             <UserContent />
           </Sider>

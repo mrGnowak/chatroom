@@ -10,4 +10,5 @@ export type Users = {
     text: string;
     toUser: number;
     senderUserId: number;
+    senderUserName: string;
   }

@@ -12,5 +12,7 @@ public interface ChatMessageRepo extends JpaRepository<ChatMessage, Long> {
 
     List<ChatMessage> findAllByToUser(Long toUser);
 
+    List<ChatMessage> findFirst100ByToUserOrderByIdDesc(Long toUser);
+
     ChatMessage findByToUser(String toUser);
 }
