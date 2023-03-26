@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Button, MenuProps, Result } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Button, Result } from "antd";
+import { Layout, theme } from "antd";
 import "./layout.css";
-import { Users } from "../components/types";
-import ChatContent from "../components/chatbox/ChatContent";
 import NavBar from "./NavBar";
-import UserContent from "../components/users/UserContent";
 import { footerContent } from "../components/FooterContent";
 
 const { Header, Content, Footer, Sider } = Layout;

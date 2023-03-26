@@ -1,21 +1,24 @@
-import { Avatar, Input, Tooltip } from "antd";
+import { Avatar, Input, Layout, List, theme, Tooltip } from "antd";
 import React from "react";
 import { useUser } from "../../UserProvider";
 import { ChatMessage, Users } from "../types";
 import "./ChatContentStyle.css";
 import { UserOutlined } from "@ant-design/icons";
+import { Content } from "antd/es/layout/layout";
+import Sider from "antd/es/layout/Sider";
+import ChatBoxContent from "./ChatBoxContent";
 
 export default function ChatContent() {
-  const user = useUser();
-  const [users, setUsers] = React.useState<Users[]>([]);
+  const sessionUser = useUser();
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
-  const [message, setMessage] = React.useState<string | undefined>();
-  const onChange = (e: React.FormEvent<HTMLInputElement>) =>
-    setMessage(e.currentTarget.value);
-
+  const [users, setUsers] = React.useState<Users[]>([]);
   const websocketRef = React.useRef<any>();
+
   const [connected, setConnected] = React.useState<boolean>(false);
-  const bottomRef = React.useRef<any>(null);
+
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
 
   React.useEffect(() => {
     websocketRef.current = new WebSocket(`ws://localhost:8080/ws/messages`);
@@ -51,83 +54,71 @@ export default function ChatContent() {
     getUsers();
   }, []);
 
-  function sendMessage() {
-    if (user?.id === undefined || message === undefined || message === "") {
-      return;
-    }
-    fetch("api/chat/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: message,
-        toUser: -1,
-        senderUserId: user?.id,
-        senderUserName: user?.userName,
-      }),
-    })
-      .then((response) => response.text)
-      .then(() => setMessage(""))
-      .then((data) => console.log(data));
-  }
+  const [activeChatbox, setActiveChatbox] = React.useState<number>(-1);
 
-  React.useEffect(() => {
-    // 👇️ scroll to bottom every time messages change
-    bottomRef.current?.scrollIntoView({ behavior: "auto" });
-  }, [messages]);
+  function handleClick(id: number) {
+    setActiveChatbox(id);
+  }
 
   return (
     <>
-      Serwer status: {connected ? "Połączono" : "Brak połączenia"}
-      <div id="content-chat" style={{ height: "450px", overflow: "auto" }}>
-        <div style={{ position: "sticky", bottom: 0 }}>
-          <section>
-            <div style={{ display: "flex", flexFlow: "column wrap" }}>
-              {messages?.map((message) =>
-                message?.senderUserId === user?.id ? (
-                  <div key={message.id} className="sender-style content">
-                    {message.text}
-                  </div>
-                ) : (
-                  <div key={message.id} className="content">
-                    {" "}
-                    <Tooltip
-                      placement="right"
-                      title={
-                        message.senderUserName ? message.senderUserName : " "
-                      }
-                    >
-                      <div style={{ display: "inline" }}>
-                        <Avatar
-                          size="small"
-                          icon={<UserOutlined />}
-                          style={{ marginTop: "" }}
-                        />
-                      </div>
-
-                      <div
-                        className="getter-style"
-                        style={{ display: "inline" }}
-                      >
-                        {message.text}
-                      </div>
-                    </Tooltip>
-                  </div>
-                )
-              )}
-            </div>
-            <div ref={bottomRef} />
-          </section>
-        </div>
-      </div>
-      <div style={{ marginTop: "30px", overflow: "auto" }}>
-        <Input.Search
-          enterButton="Send"
-          size="large"
-          onSearch={sendMessage}
-          onChange={onChange}
-          value={message}
-        />
-      </div>
+      <Layout style={{ justifyContent: "center" }}>
+        <Sider
+          style={{
+            background: colorBgContainer,
+            padding: "24px 24px",
+            height: "600px",
+          }}
+          width={250}
+        >
+          <h4>User lists:</h4>
+          <List itemLayout="horizontal">
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar style={{ marginTop: "20px" }} />}
+                title={<a onClick={() => handleClick(-1)}>Public room</a>}
+                description="Zacznij rozmowe!"
+              />
+            </List.Item>
+          </List>
+          <List
+            itemLayout="horizontal"
+            dataSource={users}
+            renderItem={(user, index) =>
+              user.id !== sessionUser?.id ? (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        style={{ marginTop: "20px" }}
+                        icon={<UserOutlined />}
+                      />
+                    }
+                    title={
+                      <a onClick={() => handleClick(user.id)}>
+                        {user.userName}
+                      </a>
+                    }
+                    description="Zacznij rozmowe!"
+                  />
+                </List.Item>
+              ) : null
+            }
+          />
+        </Sider>
+        <Content
+          style={{
+            padding: "24px 24px",
+            height: "600px",
+            background: colorBgContainer,
+            marginLeft: "10px",
+            maxWidth: "500px",
+          }}
+        >
+          Serwer status: {connected ? "Połączono" : "Brak połączenia"}
+          <ChatBoxContent toUserId={activeChatbox} messages={messages} />
+        </Content>
+      </Layout>
     </>
   );
 }

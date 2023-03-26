@@ -2,14 +2,11 @@ package com.chat.chatroom.service;
 
 import org.springframework.context.annotation.Lazy;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.chat.chatroom.controller.ChatController;
 import com.chat.chatroom.model.ChatMessage;
 import com.chat.chatroom.repo.ChatMessageRepo;
 import com.chat.chatroom.ws.SocketTextHandler;
