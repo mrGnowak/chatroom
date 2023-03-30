@@ -5,19 +5,37 @@ import Input from "antd/es/input";
 import React from "react";
 import { ChatMessage } from "../types";
 import { useUser } from "../../UserProvider";
+import { Button } from "antd";
 
 type Props = {
   toUserId: number;
-  messages: ChatMessage[];
+  newMessage: ChatMessage | undefined;
 };
 
-export default function ChatBoxContent({ toUserId, messages }: Props) {
+export default function ChatBoxContent({ toUserId, newMessage }: Props) {
   const [message, setMessage] = React.useState<string | undefined>();
+  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const bottomRef = React.useRef<any>(null);
   const sessionUser = useUser();
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) =>
     setMessage(e.currentTarget.value);
+
+  const currentUser = sessionUser ? sessionUser.id : -1;
+
+  const getMessages = () =>
+    fetch("api/chat/message/private/" + currentUser + "/" + toUserId, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMessages(data.reverse() as ChatMessage[]);
+      });
+
+  React.useEffect(() => {
+    getMessages();
+  }, [toUserId]);
 
   function sendMessage() {
     if (
@@ -32,7 +50,7 @@ export default function ChatBoxContent({ toUserId, messages }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: message,
-        toUser: -1,
+        toUser: toUserId,
         senderUserId: sessionUser?.id,
         senderUserName: sessionUser?.userName,
       }),
@@ -45,6 +63,10 @@ export default function ChatBoxContent({ toUserId, messages }: Props) {
     // 👇️ scroll to bottom every time messages change
     bottomRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages]);
+
+  React.useEffect(() => {
+    newMessage ? setMessages([...messages, newMessage]) : undefined;
+  }, [messages, newMessage]);
 
   return (
     <>
@@ -98,7 +120,10 @@ export default function ChatBoxContent({ toUserId, messages }: Props) {
           value={message}
         />
       </div>
-      <div>testowa wiadomosć {toUserId}</div>
+      <div>
+        testowa wiadomosć {toUserId}{" "}
+        <Button onClick={getMessages}>Refresh</Button>
+      </div>
     </>
   );
 }

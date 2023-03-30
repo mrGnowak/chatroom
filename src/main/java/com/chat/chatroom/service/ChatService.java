@@ -52,9 +52,14 @@ public class ChatService {
         socketTextHandler.SendAll();
     }
 
-    public List<ChatMessage> getMessages() {
-        chatMessages = chatMessageRepo.findFirst100ByToUserOrderByIdDesc(-1L);
-
+    public List<ChatMessage> getMessages(Long toUserId, Long userId) {
+        if (toUserId.equals(-1L)) {
+            chatMessages = chatMessageRepo.findFirst100ByToUserOrderByIdDesc(toUserId);
+        } else {
+            chatMessages = chatMessageRepo.findFirst100ByToUserAndSenderUserIdOrToUserAndSenderUserIdOrderByIdDesc(
+                    toUserId, userId,
+                    userId, toUserId);
+        }
         return chatMessages;
     }
 

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.model.ChatMessage;
-import com.chat.chatroom.repo.ChatMessageRepo;
 import com.chat.chatroom.repo.UserRepo;
 import com.chat.chatroom.service.ChatService;
 
@@ -25,9 +25,6 @@ public class ChatController {
 
     @Autowired
     private UserRepo userRepo;
-
-    @Autowired
-    private ChatMessageRepo chatMessageRepo;
 
     @Autowired
     public ChatService chatService;
@@ -42,9 +39,11 @@ public class ChatController {
         chatService.addOne();
     }
 
-    @GetMapping(value = "/messages")
-    public List<ChatMessage> returnMessages() {
-        return chatMessageRepo.findAll();
+    @GetMapping(value = "/message/private/{userId}/{toUserId}")
+    public List<ChatMessage> returnMessagesPrivate(@PathVariable Long userId, @PathVariable Long toUserId) {
+        System.out.println("private messages " + userId + " | " + toUserId);
+        return chatService.getMessages(toUserId, userId);
+
     }
 
     @GetMapping(value = "/number")

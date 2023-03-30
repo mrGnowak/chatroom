@@ -10,12 +10,12 @@ import ChatBoxContent from "./ChatBoxContent";
 
 export default function ChatContent() {
   const sessionUser = useUser();
-  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+  const [newMessage, setNewMessage] = React.useState<ChatMessage>();
   const [users, setUsers] = React.useState<Users[]>([]);
   const websocketRef = React.useRef<any>();
-
+  const [activeChatbox, setActiveChatbox] = React.useState<number>(-1);
   const [connected, setConnected] = React.useState<boolean>(false);
-
+  var temp: string;
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -25,9 +25,9 @@ export default function ChatContent() {
     const w = websocketRef.current;
     w.onmessage = (evt: any) => {
       console.log(evt);
-      const tempMessages = JSON.parse(evt.data.toString());
-      console.log("tempMessages" + tempMessages);
-      setMessages(tempMessages.reverse());
+      //const tempMessages = JSON.parse(evt.data.toString());
+      //console.log("tempMessages" + tempMessages);
+      temp = evt.data.toString();
     };
     w.onerror = (evt: any) => {
       console.error(evt);
@@ -53,8 +53,6 @@ export default function ChatContent() {
   React.useEffect(() => {
     getUsers();
   }, []);
-
-  const [activeChatbox, setActiveChatbox] = React.useState<number>(-1);
 
   function handleClick(id: number) {
     setActiveChatbox(id);
@@ -116,7 +114,7 @@ export default function ChatContent() {
           }}
         >
           Serwer status: {connected ? "Połączono" : "Brak połączenia"}
-          <ChatBoxContent toUserId={activeChatbox} messages={messages} />
+          <ChatBoxContent toUserId={activeChatbox} newMessage={newMessage} />
         </Content>
       </Layout>
     </>

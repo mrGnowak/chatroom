@@ -57,7 +57,7 @@ public class SocketTextHandler extends TextWebSocketHandler {
     }
 
     private TextMessage currentStatus() {
-        var messages = chatService.getMessages();
+        var messages = "message from socket";// chatService.getMessages();
 
         try {
             var json = objectMapper.writeValueAsString(messages);
