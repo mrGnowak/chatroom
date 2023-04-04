@@ -6,6 +6,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -38,6 +40,10 @@ public class SocketTextHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        var ctx = SecurityContextHolder.getContext();
+        var sessionId = session.getHandshakeHeaders().get("Cookie").get(0);
+        var c = session.getHandshakeHeaders();
+        var p = session.getPrincipal();
         var path = session.getUri().getPath();
         logger.info("ws connection established: " + path);
         sessions.add(session);
