@@ -21,6 +21,7 @@ export default function ChatContent() {
   } = theme.useToken();
 
   React.useEffect(() => {
+    console.log(window.location.host);
     websocketRef.current = new WebSocket(
       `ws://${window.location.host}/ws/messages`
     );

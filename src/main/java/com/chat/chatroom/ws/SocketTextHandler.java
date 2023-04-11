@@ -41,6 +41,7 @@ public class SocketTextHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         var ctx = SecurityContextHolder.getContext();
+        logger.info("ctx -------------------: " + ctx.toString());
         var sessionId = session.getHandshakeHeaders().get("Cookie").get(0);
         var c = session.getHandshakeHeaders();
         var p = session.getPrincipal();
