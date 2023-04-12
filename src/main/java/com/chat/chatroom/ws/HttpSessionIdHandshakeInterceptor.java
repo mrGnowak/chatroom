@@ -11,6 +11,9 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import jakarta.servlet.http.HttpSession;
 
 public class HttpSessionIdHandshakeInterceptor implements HandshakeInterceptor {
+
+    String SESSION_ATTR = "test";
+
     public boolean beforeHandshake(ServerHttpRequest request,
             ServerHttpResponse response,
             WebSocketHandler wsHandler,
