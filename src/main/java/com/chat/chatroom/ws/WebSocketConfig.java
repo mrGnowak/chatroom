@@ -7,25 +7,25 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-@Configuration
-@EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
+//@Configuration
+//@EnableWebSocket
+public class WebSocketConfig {// implements WebSocketConfigurer {
 
-    @Autowired
-    protected SocketTextHandler socketTextHandler;
-
-    @Autowired
-    ChannelInterceptorAdapter channelInterceptorAdapter;
-
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(socketTextHandler, "/ws/messages")
-                .setAllowedOrigins("*")
-                .addInterceptors(new HttpSessionIdHandshakeInterceptor());
-    }
-
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(channelInterceptorAdapter.sessionContextChannelInterceptorAdapter());
-    }
+    // @Autowired
+    // protected SocketTextHandler socketTextHandler;
+    //
+    // @Autowired
+    // ChannelInterceptorAdapter channelInterceptorAdapter;
+    //
+    // @Override
+    // public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    // registry.addHandler(socketTextHandler, "/ws/messages")
+    // .setAllowedOrigins("*")
+    // .addInterceptors(new HttpSessionIdHandshakeInterceptor());
+    // }
+    //
+    // public void configureClientInboundChannel(ChannelRegistration registration) {
+    // registration.interceptors(channelInterceptorAdapter.sessionContextChannelInterceptorAdapter());
+    // }
 
 }
