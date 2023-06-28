@@ -37,24 +37,24 @@ public class ChatController {
         return userRepo.findAll();
     }
 
-    @PostMapping(value = "/addone")
-    public void addOne() {
-        chatService.addOne();
-    }
-
-    @GetMapping(value = "/messages")
-    public List<ChatMessage> returnMessages() {
-        return chatMessageRepo.findAll();
-    }
-
-    @GetMapping(value = "/number")
-    public void returnNumber() {
-        chatService.getNumber();
-    }
-
-    @PostMapping(value = "/send")
-    public void addOne(@RequestBody ChatMessage chatMessage) {
-        chatService.save(chatMessage);
-
-    }
+    // @PostMapping(value = "/addone")
+    // public void addOne() {
+    // chatService.addOne();
+    // }
+    //
+    // @GetMapping(value = "/messages")
+    // public List<ChatMessage> returnMessages() {
+    // return chatMessageRepo.findAll();
+    // }
+    //
+    // @GetMapping(value = "/number")
+    // public void returnNumber() {
+    // chatService.getNumber();
+    // }
+    //
+    // @PostMapping(value = "/send")
+    // public void addOne(@RequestBody ChatMessage chatMessage) {
+    // chatService.save(chatMessage);
+    //
+    // }
 }
