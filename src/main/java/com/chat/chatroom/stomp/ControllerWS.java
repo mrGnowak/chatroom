@@ -22,7 +22,7 @@ public class ControllerWS {
 
     @MessageMapping("/test")
     public void greet(String greeting) {
-        logger.info("wiadomość testowa dla", greeting);
+        logger.info("wiadomość testowa dla " + greeting);
 
         String text = "[" + Instant.now() + "]: " + greeting;
         this.simpMessagingTemplate.convertAndSend("/topic/test", text);

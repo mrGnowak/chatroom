@@ -58,6 +58,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/getUser").authenticated()
                 .requestMatchers("/api/login/**").permitAll()
                 .anyRequest().permitAll();
+        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
+        http.cors().disable();
 
         return http.build();
     }
