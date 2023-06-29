@@ -12,7 +12,7 @@ export default function HomeContent() {
   client.configure({
     brokerURL: wsUrl,
     onConnect: () => {
-      setConnectedMessage("connected");
+      setConnectedMessage("Connected");
 
       //client.subscribe("/queue/now", (message) => {
       //  console.log(message);
