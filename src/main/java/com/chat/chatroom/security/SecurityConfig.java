@@ -1,5 +1,7 @@
 package com.chat.chatroom.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -46,22 +51,35 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors().disable()
-                .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/chat/**").permitAll()
-                .requestMatchers("/chat").permitAll()
-                .requestMatchers("/ws/messages").permitAll()
-                .requestMatchers("/api/getUser").authenticated()
-                .requestMatchers("/api/login/**").permitAll()
-                .anyRequest().permitAll();
-        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
-        http.cors().disable();
+                // .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf
+                        // ignore our stomp endpoints since they are protected using Stomp headers
+                        .ignoringRequestMatchers("/api/chat/**"))
+                // .cors(cors -> cors.disable())
+                .sessionManagement(
+                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())) // SockJS frames
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/api/chat/**").permitAll()
+                        .requestMatchers("/chat").permitAll()
+                        .requestMatchers("/ws/messages").permitAll()
+                        .requestMatchers("/api/getUser").authenticated()
+                        .requestMatchers("/api/login/**").permitAll()
+                        .anyRequest().permitAll());
 
         return http.build();
+
+    }
+    // csrf sonfiguration
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://localhost:8080"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }

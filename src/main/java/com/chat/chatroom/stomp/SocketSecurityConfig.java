@@ -3,26 +3,56 @@ package com.chat.chatroom.stomp;
 import java.security.Principal;
 import java.util.Map;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
 import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 @Configuration
-@EnableWebSocketMessageBroker
-public class SocketSecurityConfig
-        extends AbstractSecurityWebSocketMessageBrokerConfigurer {
-    @Override
-    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-        messages
-                .simpDestMatchers("/secured/**").authenticated()
-                .anyMessage().authenticated();
-    }
+@EnableWebSocketSecurity
+public class SocketSecurityConfig {
+    //
+    // @Override
+    // protected void configureInbound(MessageMatcherDelegatingAuthorizationManager
+    // messages) {
+    // messages
+    // .simpDestMatchers("/secured/**").authenticated()
+    // .anyMessage().authenticated();
+    // }
+
+    //
+
+    // @Bean
+    // public AuthorizationManager<Message<?>>
+    // messageAuthorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder
+    // messages) {
+    // messages
+    // .nullDestMatcher().authenticated()
+    // .simpSubscribeDestMatchers("/user/queue/errors").permitAll()
+    // .simpDestMatchers("/app/**").hasRole("USER")
+    // .simpSubscribeDestMatchers("/user/**", "/topic/friends/*").hasRole("USER")
+    // .simpTypeMatchers(MESSAGE, SUBSCRIBE).denyAll()
+    // .anyMessage().denyAll();
+    //
+    // return messages.build();
+    // }
+
+    // @Override
+    // protected void configureInbound(MessageMatcherDelegatingAuthorizationManager
+    // messages) {
+    // messages
+    // .simpDestMatchers("/secured/**").authenticated()
+    // .anyMessage().authenticated();
+    // }
     // extends AbstractSecurityWebSocketMessageBrokerConfigurer {
     // @Override
     // public void configureMessageBroker(MessageBrokerRegistry config) {
