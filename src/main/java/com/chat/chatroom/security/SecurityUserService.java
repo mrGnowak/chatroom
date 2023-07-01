@@ -21,7 +21,7 @@ public class SecurityUserService implements UserDetailsService {
         }
         return new SecurityUser() {
             {
-                setId(user.getId());
+                setId(user.getUserId());
                 setAuthorities(List.of(() -> "read"));
                 setPassword(user.getPassword());
                 setUsername(user.getUserName());
