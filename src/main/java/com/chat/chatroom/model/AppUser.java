@@ -1,9 +1,14 @@
 package com.chat.chatroom.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.Data;
 
 @Entity
@@ -12,7 +17,7 @@ public class AppUser {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long userId;
     @Column
     private String userName;
     @Column
@@ -20,4 +25,7 @@ public class AppUser {
     @Column
     private String email;
 
+    @ManyToMany
+    @JoinTable(name = "users_rooms", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
+    Set<Rooms> userRooms;
 }

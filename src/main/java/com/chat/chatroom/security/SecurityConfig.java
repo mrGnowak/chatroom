@@ -52,20 +52,22 @@ public class SecurityConfig {
 
         http
                 // .csrf(csrf -> csrf.disable())
-                .csrf(csrf -> csrf
-                        // ignore our stomp endpoints since they are protected using Stomp headers
-                        .ignoringRequestMatchers("/api/chat/**"))
-                // .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
+                // ignore our stomp endpoints since they are protected using Stomp headers //
+                // rozszerzyć o opcje logowania
+                // .ignoringRequestMatchers("/websocket"))
+                .cors(cors -> cors.disable())
                 .sessionManagement(
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())) // SockJS frames
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/chat/**").permitAll()
-                        .requestMatchers("/chat").permitAll()
-                        .requestMatchers("/ws/messages").permitAll()
-                        .requestMatchers("/api/getUser").authenticated()
-                        .requestMatchers("/api/login/**").permitAll()
-                        .anyRequest().permitAll());
+                        .requestMatchers("/api/chat/**").authenticated()
+                        // .requestMatchers("/chat").permitAll()
+                        .requestMatchers("/websocket/**").authenticated()
+                        .requestMatchers("/api/auth/getUser").authenticated()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()
+                        .anyRequest().denyAll());
 
         return http.build();
 

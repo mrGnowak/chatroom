@@ -61,7 +61,7 @@ public class UserService {
         } else {
             var checkPass = checkPasswordMatches(password, user.getPassword());
             if (checkPass) {
-                return user.getId();
+                return user.getUserId();
             }
         }
         return null;
@@ -74,8 +74,8 @@ public class UserService {
     }
 
     public void updateUser(AppUser appUser) {
-        var id = appUser.getId();
-        var newUser = userRepo.findById(id).get();
+        var userId = appUser.getUserId();
+        var newUser = userRepo.findById(userId).get();
         newUser.setPassword(globalPasswordEncoder.encode(appUser.getPassword()));
         userRepo.save(newUser);
     }
