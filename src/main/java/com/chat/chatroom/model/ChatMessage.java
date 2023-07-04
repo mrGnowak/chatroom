@@ -18,6 +18,6 @@ public class ChatMessage {
     @Column
     private Long senderUserId;
     @Column
-    private Long toUser;
+    private Long roomId;
 
 }

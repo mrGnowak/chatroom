@@ -29,12 +29,22 @@ export default function HomeContent() {
     client.publish({ destination: "/app/test", body: "Hello world" });
   };
 
+  const getRooms = () => {
+    fetch("api/chat/getRooms/1", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }).then((data) => console.log(data));
+  };
+
   return (
     <>
       <div>
         {connectedMessage}
         <button onClick={sendMessage}>Send message</button>
         {message}
+      </div>
+      <div>
+        <button onClick={getRooms}>getAllRoms</button>
       </div>
     </>
   );

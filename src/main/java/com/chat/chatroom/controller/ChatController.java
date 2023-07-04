@@ -16,6 +16,7 @@ import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.model.ChatMessage;
 import com.chat.chatroom.repo.UserRepo;
 import com.chat.chatroom.service.ChatService;
+import com.chat.chatroom.service.RoomsService;
 
 @RequestMapping(value = "/api/chat")
 @RestController
@@ -28,6 +29,9 @@ public class ChatController {
 
     @Autowired
     public ChatService chatService;
+
+    @Autowired
+    public RoomsService roomsService;
 
     @GetMapping(value = "/users")
     public List<AppUser> users() {
@@ -55,5 +59,10 @@ public class ChatController {
     public void addOne(@RequestBody ChatMessage chatMessage) {
         chatService.save(chatMessage);
 
+    }
+
+    @GetMapping(value = "/getRooms/{userId}")
+    public void getAllUserRooms(@PathVariable Long userId) {
+        roomsService.getAllUserRooms(userId);
     }
 }

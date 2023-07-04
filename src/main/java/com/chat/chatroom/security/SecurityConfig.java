@@ -61,7 +61,8 @@ public class SecurityConfig {
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())) // SockJS frames
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/chat/**").authenticated()
+                        .requestMatchers("/api/chat/**").permitAll()
+                        .requestMatchers("/api/chat/getRooms/**").permitAll()
                         // .requestMatchers("/chat").permitAll()
                         .requestMatchers("/websocket/**").authenticated()
                         .requestMatchers("/api/auth/getUser").authenticated()
