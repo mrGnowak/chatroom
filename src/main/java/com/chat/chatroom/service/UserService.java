@@ -1,6 +1,10 @@
 package com.chat.chatroom.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -78,6 +82,14 @@ public class UserService {
         var newUser = userRepo.findById(userId).get();
         newUser.setPassword(globalPasswordEncoder.encode(appUser.getPassword()));
         userRepo.save(newUser);
+    }
+
+    public ResponseEntity<Object> getAllUsers() {
+        List<AppUser> appUsers = userRepo.findAll();
+        if (appUsers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(appUsers, HttpStatus.OK);
     }
 
 }

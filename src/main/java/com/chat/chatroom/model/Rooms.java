@@ -22,6 +22,6 @@ public class Rooms {
     private String roomStyle;
 
     @ManyToMany(mappedBy = "userRooms")
-    Set<AppUser> usersInRoom;
+    private Set<AppUser> usersInRoom;
 
 }

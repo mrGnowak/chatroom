@@ -1,5 +1,6 @@
 package com.chat.chatroom.model;
 
+import java.util.Collection;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -27,5 +28,5 @@ public class AppUser {
 
     @ManyToMany
     @JoinTable(name = "users_rooms", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
-    Set<Rooms> userRooms;
+    private Set<Rooms> userRooms;
 }
