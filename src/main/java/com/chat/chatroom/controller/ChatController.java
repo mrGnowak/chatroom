@@ -38,21 +38,11 @@ public class ChatController {
         return userRepo.findAll();
     }
 
-    @PostMapping(value = "/addone")
-    public void addOne() {
-        chatService.addOne();
-    }
+    @GetMapping(value = "/message/private/{userId}/{roomId}")
+    public List<ChatMessage> returnMessagesPrivate(@PathVariable Long userId, @PathVariable Long roomId) {
+        System.out.println("private messages " + userId + " | " + roomId);
+        return chatService.getMessages(roomId, userId);
 
-    @GetMapping(value = "/message/private/{userId}/{toUserId}")
-    public List<ChatMessage> returnMessagesPrivate(@PathVariable Long userId, @PathVariable Long toUserId) {
-        System.out.println("private messages " + userId + " | " + toUserId);
-        return chatService.getMessages(toUserId, userId);
-
-    }
-
-    @GetMapping(value = "/number")
-    public void returnNumber() {
-        chatService.getNumber();
     }
 
     @PostMapping(value = "/send")

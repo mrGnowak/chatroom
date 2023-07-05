@@ -12,7 +12,7 @@ public class ChatMessage {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long mesId;
     @Column
     private String text;
     @Column

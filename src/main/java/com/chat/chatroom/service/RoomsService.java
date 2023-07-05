@@ -1,14 +1,10 @@
 package com.chat.chatroom.service;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chat.chatroom.controller.AuthController;
-import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.repo.RoomsRepo;
 import com.chat.chatroom.repo.UserRepo;
 
@@ -36,8 +32,8 @@ public class RoomsService {
     }
 
     public void getAllUserRooms(Long userId) {
-        logger.info(userRepo.findAllByUserId(userId).toString());
-        userRepo.findAllByUserId(userId);
+        // logger.info(userRepo.findAllByUserId(userId).toString());
+        // userRepo.findAllByUserId(userId);
     }
 
 }

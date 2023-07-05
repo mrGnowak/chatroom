@@ -8,11 +8,11 @@ import { useUser } from "../../UserProvider";
 import { Button } from "antd";
 
 type Props = {
-  toUserId: number;
+  roomId: number;
   newMessage: ChatMessage | undefined;
 };
 
-export default function ChatBoxContent({ toUserId, newMessage }: Props) {
+export default function ChatBoxContent({ roomId, newMessage }: Props) {
   const [message, setMessage] = React.useState<string | undefined>();
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const bottomRef = React.useRef<any>(null);
@@ -21,10 +21,10 @@ export default function ChatBoxContent({ toUserId, newMessage }: Props) {
   const onChange = (e: React.FormEvent<HTMLInputElement>) =>
     setMessage(e.currentTarget.value);
 
-  const currentUser = sessionUser ? sessionUser.id : -1;
-
+  const currentUser = sessionUser ? sessionUser.id : undefined;
+  //messages for room
   const getMessages = () =>
-    fetch("api/chat/message/private/" + currentUser + "/" + toUserId, {
+    fetch("api/chat/message/private/" + currentUser + "/" + roomId, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -35,7 +35,21 @@ export default function ChatBoxContent({ toUserId, newMessage }: Props) {
 
   React.useEffect(() => {
     getMessages();
-  }, [toUserId]);
+  }, [roomId]);
+  //get all created user's rooms
+  const getRooms = () =>
+    fetch("api/chat/getRooms/" + currentUser, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMessages(data.reverse() as ChatMessage[]);
+      });
+
+  React.useEffect(() => {
+    getRooms();
+  }, [roomId]);
 
   function sendMessage() {
     if (
@@ -50,9 +64,8 @@ export default function ChatBoxContent({ toUserId, newMessage }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: message,
-        toUser: toUserId,
         senderUserId: sessionUser?.id,
-        senderUserName: sessionUser?.userName,
+        roomId: 1, //Tested value for only room 1
       }),
     })
       .then((response) => response.text)
@@ -76,17 +89,15 @@ export default function ChatBoxContent({ toUserId, newMessage }: Props) {
             <div style={{ display: "flex", flexFlow: "column wrap" }}>
               {messages?.map((message) =>
                 message?.senderUserId === sessionUser?.id ? (
-                  <div key={message.id} className="sender-style content">
+                  <div key={message.mesId} className="sender-style content">
                     {message.text}
                   </div>
                 ) : (
-                  <div key={message.id} className="content">
+                  <div key={message.mesId} className="content">
                     {" "}
                     <Tooltip
                       placement="right"
-                      title={
-                        message.senderUserName ? message.senderUserName : " "
-                      }
+                      title={message.senderUserId ? message.senderUserId : " "}
                     >
                       <div style={{ display: "inline" }}>
                         <Avatar
@@ -121,7 +132,7 @@ export default function ChatBoxContent({ toUserId, newMessage }: Props) {
         />
       </div>
       <div>
-        testowa wiadomosć {toUserId}{" "}
+        testowa wiadomosć {roomId}{" "}
         <Button onClick={getMessages}>Refresh</Button>
       </div>
     </>

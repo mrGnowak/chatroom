@@ -1,14 +1,19 @@
 export type Users = {
-    id: number;
+    userId: number;
     userName: string;
     password: string;
     email: string;
   };
   
   export type ChatMessage = {
-    id: number;
+    mesId: number;
     text: string;
-    toUser: number;
     senderUserId: number;
-    senderUserName: string;
+    roomId: number;
+  }
+
+  export type Room = {
+    roomId: number;
+    roomName: string;
+    roomStyle: string;
   }

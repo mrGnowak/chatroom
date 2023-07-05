@@ -1,5 +1,6 @@
 package com.chat.chatroom.repo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +20,6 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
     // r HAVING COUNT(u) = 2")
     // List<Rooms> findRoomsByUserId(@Param("userId") Long userId);
 
-    List<Rooms> findAllByUserId(Long userId);
+    ArrayList<Rooms> findAllByUserId(Long userId);
 
 }

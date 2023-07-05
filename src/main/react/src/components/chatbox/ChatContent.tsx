@@ -86,7 +86,7 @@ export default function ChatContent() {
             itemLayout="horizontal"
             dataSource={users}
             renderItem={(user, index) =>
-              user.id !== sessionUser?.id ? (
+              user.userId !== sessionUser?.id ? (
                 <List.Item>
                   <List.Item.Meta
                     avatar={
@@ -96,7 +96,7 @@ export default function ChatContent() {
                       />
                     }
                     title={
-                      <a onClick={() => handleClick(user.id)}>
+                      <a onClick={() => handleClick(user.userId)}>
                         {user.userName}
                       </a>
                     }
@@ -117,7 +117,7 @@ export default function ChatContent() {
           }}
         >
           Serwer status: {connected ? "Połączono" : "Brak połączenia"}
-          <ChatBoxContent toUserId={activeChatbox} newMessage={newMessage} />
+          <ChatBoxContent roomId={activeChatbox} newMessage={newMessage} />
         </Content>
       </Layout>
     </>
