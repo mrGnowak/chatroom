@@ -29,9 +29,9 @@ public class AppUser {
     @Column
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany // (fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_rooms", joinColumns = {
-            @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false, updatable = false) }, inverseJoinColumns = {
-                    @JoinColumn(name = "room_id", referencedColumnName = "roomId", nullable = false, updatable = false) })
-    private Set<Rooms> rooms = new HashSet<>();
+            @JoinColumn(name = "user_id", referencedColumnName = "userId") }, inverseJoinColumns = {
+                    @JoinColumn(name = "room_id", referencedColumnName = "roomId") })
+    private Set<Rooms> userRooms = new HashSet<>();
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.model.ChatMessage;
 import com.chat.chatroom.model.Rooms;
+import com.chat.chatroom.repo.RoomsRepo;
 import com.chat.chatroom.repo.UserRepo;
 import com.chat.chatroom.service.ChatService;
 import com.chat.chatroom.service.RoomsService;
@@ -34,6 +35,9 @@ public class ChatController {
 
     @Autowired
     public RoomsService roomsService;
+
+    @Autowired
+    public RoomsRepo roomsRepo;
 
     // private Rooms rooms;
 
@@ -55,8 +59,17 @@ public class ChatController {
 
     }
 
-    @GetMapping(value = "/getRooms/{userId}")
-    public void findByUserId(@PathVariable Long userId) {
-        // System.out.println(roomsService.findByUserId(userId));
+    @GetMapping(value = "/getUserRooms/{userId}")
+    public AppUser findUserRooms(@PathVariable Long userId) {
+
+        System.out.println("finding room's users " + userRepo.findById(userId).get());
+        return userRepo.findById(userId).get();
+    }
+
+    @GetMapping(value = "/getUsersInRoom/{roomId}")
+    public Rooms findusersInRoom(@PathVariable Long roomId) {
+
+        System.out.println("finding room's users " + roomsRepo.findById(roomId).get());
+        return roomsRepo.findById(roomId).get();
     }
 }
