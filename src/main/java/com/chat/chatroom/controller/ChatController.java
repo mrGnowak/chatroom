@@ -1,6 +1,7 @@
 package com.chat.chatroom.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.model.ChatMessage;
+import com.chat.chatroom.model.Rooms;
 import com.chat.chatroom.repo.UserRepo;
 import com.chat.chatroom.service.ChatService;
 import com.chat.chatroom.service.RoomsService;
@@ -32,6 +34,8 @@ public class ChatController {
 
     @Autowired
     public RoomsService roomsService;
+
+    // private Rooms rooms;
 
     @GetMapping(value = "/users")
     public List<AppUser> users() {
@@ -52,7 +56,7 @@ public class ChatController {
     }
 
     @GetMapping(value = "/getRooms/{userId}")
-    public void getAllUserRooms(@PathVariable Long userId) {
-        roomsService.getAllUserRooms(userId);
+    public void findByUserId(@PathVariable Long userId) {
+        // System.out.println(roomsService.findByUserId(userId));
     }
 }

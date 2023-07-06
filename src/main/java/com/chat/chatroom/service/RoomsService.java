@@ -1,6 +1,9 @@
 package com.chat.chatroom.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +54,13 @@ public class RoomsService {
 
     }
 
-    public void getAllUserRooms(Long userId) {
-
-        // logger.info(userRepo.findAllByUserId(userId).toString());
-        // userRepo.findAllByUserId(userId);
-    }
+    // public Set<Rooms> findByUserId(Long userId) {
+    //
+    // // var temp = userRepo.findById(userId).get();
+    // // temp.getUserRooms();
+    // // System.out.println(temp.getUserRooms());
+    // //// userRepo.findAllByUserId(userId);
+    // // return temp.getUserRooms();
+    // }
 
 }
