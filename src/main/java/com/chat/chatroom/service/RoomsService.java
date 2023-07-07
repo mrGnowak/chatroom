@@ -37,30 +37,10 @@ public class RoomsService {
         if (checkIsPMRoomExist(userId, toUserId)) {
             return;
         }
-
-        rooms.setRoomName("pokojTestowy");
-        rooms.setRoomStyle(null);
-        roomsRepo.save(rooms);
-
-        var user = userRepo.findById(userId);
-
-        // Collection<AppUser> col;
-        // col.add(userRepo.findById(userId));
-        // col.add(userRepo.findById(toUserId));
-        // rooms.setUsersInRoom();
     }
 
     public void createNewUsersRoom(Long userId, Long toUserId) {
 
     }
-
-    // public Set<Rooms> findByUserId(Long userId) {
-    //
-    // // var temp = userRepo.findById(userId).get();
-    // // temp.getUserRooms();
-    // // System.out.println(temp.getUserRooms());
-    // //// userRepo.findAllByUserId(userId);
-    // // return temp.getUserRooms();
-    // }
 
 }

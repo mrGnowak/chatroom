@@ -36,7 +36,18 @@ export default function HomeContent() {
   };
 
   const getRooms = () => {
-    fetch("api/chat/getUserRooms/1", {
+    fetch("api/chat/getUserRooms/3", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        //setMessage(data as Message[]);
+      });
+  };
+
+  const getUsersInRooms = () => {
+    fetch("api/chat/getUsersInRoom/2", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -56,6 +67,8 @@ export default function HomeContent() {
       <div>
         <button onClick={getRooms}>getAllRoms</button>
         {message}
+
+        <button onClick={getUsersInRooms}>getUsersInRooms</button>
       </div>
     </>
   );

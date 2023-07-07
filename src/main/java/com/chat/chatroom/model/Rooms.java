@@ -6,6 +6,7 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -25,10 +26,7 @@ public class Rooms {
     @Column
     private String roomStyle;
 
-    @ManyToMany(mappedBy = "userRooms", cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }) // , fetch = FetchType.LAZY
+    @ManyToMany(mappedBy = "userRooms", fetch = FetchType.LAZY)
     private Set<AppUser> users = new HashSet<>();
 
 }

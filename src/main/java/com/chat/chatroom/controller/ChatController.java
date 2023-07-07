@@ -60,16 +60,24 @@ public class ChatController {
     }
 
     @GetMapping(value = "/getUserRooms/{userId}")
-    public AppUser findUserRooms(@PathVariable Long userId) {
+    public Set<Rooms> findUserRooms(@PathVariable Long userId) {
 
-        System.out.println("finding room's users " + userRepo.findById(userId).get());
-        return userRepo.findById(userId).get();
+        // System.out.println("User 1 rooms " +
+        // userRepo.findById(userId).get().getUserRooms());
+        // return userRepo.findById(userId).get().getUserRooms();
+        System.out.println(userRepo.findRoomsByUserId(userId));
+
+        return userRepo.findRoomsByUserId(userId);
+        // findUsersByRoomId
     }
 
     @GetMapping(value = "/getUsersInRoom/{roomId}")
-    public Rooms findusersInRoom(@PathVariable Long roomId) {
+    public List<AppUser> findusersInRoom(@PathVariable Long roomId) {
 
-        System.out.println("finding room's users " + roomsRepo.findById(roomId).get());
-        return roomsRepo.findById(roomId).get();
+        // System.out.println("Users in room 1 " +
+        // roomsRepo.findById(roomId).get().getUsers());
+        // return roomsRepo.findById(roomId).get().getUsers();
+        System.out.println(userRepo.findUsersByRoomId(roomId));
+        return userRepo.findUsersByRoomId(roomId);
     }
 }
