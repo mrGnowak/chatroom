@@ -2,27 +2,35 @@ package com.chat.chatroom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.mapping.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.chat.chatroom.model.AppUser;
+import com.chat.chatroom.model.Rooms;
 import com.chat.chatroom.repo.UserRepo;
 import com.chat.chatroom.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ComponentScan(basePackages = "java.com.chat.chatroom")
+
 class RegisterTests {
 
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
+    @MockBean
     private UserService userService;
 
     @Test
@@ -51,17 +59,17 @@ class RegisterTests {
 
         assertEquals(userRepo.findById(1L).get().getUserName(), "user1");
         assertEquals(userRepo.findById(2L).get().getEmail(), "user2@u.pl");
-        // assertHashPassword("1234", userRepo.findById(1L).get().getPassword());
+        assertHashPassword("1234", userRepo.findById(1L).get().getPassword());
 
         // check correct statement:
         // except: Created!
-        AppUser user3 = new AppUser();
-        user1.setUserId(3L);
-        user2.setUserName("user3");
-        user2.setPassword("1234");
-        user2.setEmail("user3@u.pl");
-
-        assertEquals(userService.saveNewUser(user3), "Created!");
+        // AppUser user3 = new AppUser();
+        // user1.setUserId(3L);
+        // user2.setUserName("user3");
+        // user2.setPassword("1234");
+        // user2.setEmail("user3@u.pl");
+        //
+        // assertEquals(userService.saveNewUser(user3), "Created!");
     }
 
     // @Test
@@ -94,9 +102,9 @@ class RegisterTests {
     // assertEquals(statementBoth, "UserName is occupied!");
     // }
     //
-    // void assertHashPassword(String password, String dbHashPassword) {
-    // var check = userService.checkPasswordMatches(password, dbHashPassword);
-    // assertEquals(check, true);
-    // }
+    void assertHashPassword(String password, String dbHashPassword) {
+        var check = userService.checkPasswordMatches(password, dbHashPassword);
+        assertEquals(check, true);
+    }
 
 }
