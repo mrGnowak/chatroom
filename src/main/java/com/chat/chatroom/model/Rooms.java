@@ -25,6 +25,8 @@ public class Rooms {
     private String roomName;
     @Column
     private String roomStyle;
+    @Column
+    private RoomPrivacyEnum privacy;
 
     @ManyToMany(mappedBy = "userRooms", fetch = FetchType.LAZY)
     private Set<AppUser> users = new HashSet<>();
