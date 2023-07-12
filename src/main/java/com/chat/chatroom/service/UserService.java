@@ -7,11 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.repo.UserRepo;
 
-@Component
+@Service
 public class UserService {
 
     @Autowired

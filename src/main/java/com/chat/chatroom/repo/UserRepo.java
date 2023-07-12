@@ -6,10 +6,12 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.model.Rooms;
 
+@Repository
 public interface UserRepo extends JpaRepository<AppUser, Long> {
 
     AppUser findByEmail(String email);
