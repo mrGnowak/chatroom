@@ -2,6 +2,8 @@ package com.chat.chatroom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -20,6 +22,9 @@ import com.chat.chatroom.service.UserService;
 @AutoConfigureTestDatabase
 
 class CreateRoomsTests {
+
+    private static SessionFactory sessionFactory;
+    private Session session;
 
     @Autowired
     private RoomsRepo roomsRepo;
@@ -77,6 +82,26 @@ class CreateRoomsTests {
         assertEquals(roomsRepo.findById(2L).get().getPrivacy(), RoomPrivacyEnum.PRIVATE);
         assertEquals(roomsRepo.findById(3L).get().getPrivacy(), RoomPrivacyEnum.GROUP);
         assertEquals(roomsRepo.existsById(2L), true);
+
+    }
+
+    @Test
+    public void testAddCreatedRoomToCreatdUser() {
+        var user1 = new AppUser();
+        user1.setUserId(1L);
+        user1.setUserName("user1");
+        user1.setPassword("1234");
+        user1.setEmail("user1@u.pl");
+
+        userService.saveNewUser(user1);
+        userRepo.flush();
+
+        var room1 = new Rooms();
+        room1.setRoomId(1L);
+        room1.setRoomName("Room no.1 - public");
+        room1.setPrivacy(RoomPrivacyEnum.PUBLIC);
+
+        roomsService.createNewUsersRoom(room1);
 
     }
 

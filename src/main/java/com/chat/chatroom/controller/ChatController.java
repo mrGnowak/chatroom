@@ -39,8 +39,6 @@ public class ChatController {
     @Autowired
     public RoomsRepo roomsRepo;
 
-    // private Rooms rooms;
-
     @GetMapping(value = "/users")
     public List<AppUser> users() {
         return userRepo.findAll();
@@ -50,34 +48,35 @@ public class ChatController {
     public List<ChatMessage> returnMessagesPrivate(@PathVariable Long userId, @PathVariable Long roomId) {
         System.out.println("private messages " + userId + " | " + roomId);
         return chatService.getMessages(roomId, userId);
-
     }
 
     @PostMapping(value = "/send")
     public void addOne(@RequestBody ChatMessage chatMessage) {
         chatService.save(chatMessage);
-
     }
 
     @GetMapping(value = "/getUserRooms/{userId}")
     public Set<Rooms> findUserRooms(@PathVariable Long userId) {
 
-        // System.out.println("User 1 rooms " +
-        // userRepo.findById(userId).get().getUserRooms());
-        // return userRepo.findById(userId).get().getUserRooms();
         System.out.println(userRepo.findRoomsByUserId(userId));
-
         return userRepo.findRoomsByUserId(userId);
-        // findUsersByRoomId
+
     }
 
     @GetMapping(value = "/getUsersInRoom/{roomId}")
     public List<AppUser> findusersInRoom(@PathVariable Long roomId) {
 
-        // System.out.println("Users in room 1 " +
-        // roomsRepo.findById(roomId).get().getUsers());
-        // return roomsRepo.findById(roomId).get().getUsers();
         System.out.println(userRepo.findUsersByRoomId(roomId));
         return userRepo.findUsersByRoomId(roomId);
+    }
+
+    @PostMapping(value = "/joinUserToRoom/{userId}/{roomId}")
+    public void joinUserToRoom(@PathVariable Long userId, @PathVariable Long roomId) {
+        var room = roomsRepo.findById(roomId).get();
+        var user = userRepo.findById(userId).get();
+        user.getUserRooms().add(room);
+        userRepo.save(user);
+        room.getUsers().add(user);
+        roomsRepo.save(room);
     }
 }
