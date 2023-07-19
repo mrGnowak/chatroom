@@ -2,12 +2,9 @@ import { Button, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
 import { useNavigate } from "react-router-dom";
 import { useRefreshUser } from "../../UserProvider";
+import { LoginForm } from "../types/types";
 //import { useRefreshUser } from '../UserProvider';
 
-type LoginForm = {
-  userName: string;
-  password: string;
-};
 export default function LoginContent() {
   const navigate = useNavigate();
   const refreshUser = useRefreshUser();

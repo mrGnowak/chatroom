@@ -2,12 +2,6 @@ import { Stomp } from "@stomp/stompjs";
 import React, { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
 
-type Message = {
-  roomId: number;
-  roomName: string;
-  roomStyle: string;
-};
-
 export default function HomeContent() {
   const wsUrl = "ws://127.0.0.1:8080/websocket";
   const sockUrl = "http://localhost:8080/websocket";
