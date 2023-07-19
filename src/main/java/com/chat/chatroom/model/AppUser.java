@@ -1,7 +1,10 @@
 package com.chat.chatroom.model;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Data
 public class AppUser {
 
     @Id
@@ -29,45 +36,32 @@ public class AppUser {
     @JoinTable(name = "users_rooms", joinColumns = {
             @JoinColumn(name = "user_id", referencedColumnName = "userId") }, inverseJoinColumns = {
                     @JoinColumn(name = "room_id", referencedColumnName = "roomId") })
-    private Set<Rooms> userRooms = new HashSet<Rooms>();
+    @JsonManagedReference
+    private Set<Rooms> userRooms = new HashSet<>();
 
-    public Long getUserId() {
-        return userId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        AppUser other = (AppUser) obj;
+        return Objects.equals(userId, other.userId);
     }
 
-    public String getUserName() {
-        return userName;
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                // Do not include userRooms in the toString method to avoid recursive call
+                '}';
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Set<Rooms> getUserRooms() {
-        return userRooms;
-    }
-
-    public void setUserRooms(Set<Rooms> userRooms) {
-        this.userRooms = userRooms;
-    }
 }

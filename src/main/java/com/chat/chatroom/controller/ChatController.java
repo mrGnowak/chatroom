@@ -75,8 +75,9 @@ public class ChatController {
         var room = roomsRepo.findById(roomId).get();
         var user = userRepo.findById(userId).get();
         user.getUserRooms().add(room);
-        userRepo.save(user);
         room.getUsers().add(user);
+        userRepo.save(user);
+
         roomsRepo.save(room);
     }
 }

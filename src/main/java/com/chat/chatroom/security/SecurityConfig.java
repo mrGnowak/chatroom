@@ -68,7 +68,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/getUser").authenticated()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/register").permitAll()
-                        .anyRequest().denyAll());
+                        .anyRequest().denyAll()); // only to dev testing
 
         return http.build();
 

@@ -36,7 +36,7 @@ export default function HomeContent() {
   };
 
   const getRooms = () => {
-    fetch("api/chat/getUserRooms/3", {
+    fetch("api/chat/getUserRooms/4", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
