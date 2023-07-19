@@ -18,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.chat.chatroom.dto.AppUserDto;
 import com.chat.chatroom.dto.LoginUserDto;
+import com.chat.chatroom.dto.RegisterUserDto;
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.security.SecurityUser;
 import com.chat.chatroom.service.UserService;
@@ -79,8 +80,12 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", consumes = { "*/*" })
-    public String register(@NonNull @NotBlank @RequestBody AppUser appUser) {
-        return userService.saveNewUser(appUser);
+    public String register(@NonNull @NotBlank @RequestBody RegisterUserDto regUserDto) {
+        AppUser user = new AppUser();
+        user.setEmail(regUserDto.getEmail());
+        user.setPassword(regUserDto.getPassword());
+        user.setUserName(regUserDto.getUserName());
+        return userService.saveNewUser(user);
     }
 
     @PostMapping(value = "/logout")

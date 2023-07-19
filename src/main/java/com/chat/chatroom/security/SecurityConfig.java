@@ -67,13 +67,14 @@ public class SecurityConfig {
                         .requestMatchers("/websocket/**").authenticated()
                         .requestMatchers("/api/auth/getUser").authenticated()
                         .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/logout").permitAll()
                         .requestMatchers("/api/auth/register").permitAll()
-                        .anyRequest().denyAll()); // only to dev testing
+                        .anyRequest().permitAll()); // only to dev testing
 
         return http.build();
 
     }
-    // csrf sonfiguration
+    // csrf configuration
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

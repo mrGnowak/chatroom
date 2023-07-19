@@ -77,7 +77,11 @@ public class ChatController {
         user.getUserRooms().add(room);
         room.getUsers().add(user);
         userRepo.save(user);
+        roomsRepo.save(room);
+    }
 
+    @PostMapping(value = "/room/updateRoom")
+    public void updateRoom(@RequestBody Rooms room) {
         roomsRepo.save(room);
     }
 }

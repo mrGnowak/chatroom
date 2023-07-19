@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -37,6 +38,7 @@ public class AppUser {
             @JoinColumn(name = "user_id", referencedColumnName = "userId") }, inverseJoinColumns = {
                     @JoinColumn(name = "room_id", referencedColumnName = "roomId") })
     @JsonManagedReference
+    @JsonIgnoreProperties("users")
     private Set<Rooms> userRooms = new HashSet<>();
 
     @Override
