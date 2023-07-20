@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
-import { SignInForm } from "../types/types";
+import { SignInForm } from "../components/types/types";
 
 export default function Signin() {
   const [response, setResponse] = useState<string | undefined>();

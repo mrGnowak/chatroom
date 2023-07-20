@@ -3,9 +3,9 @@ import Tooltip from "antd/es/tooltip";
 import { UserOutlined } from "@ant-design/icons";
 import Input from "antd/es/input";
 import React from "react";
-import { useUser } from "../../../UserProvider";
+import { useUser } from "../../UserProvider";
 import { Button } from "antd";
-import { ChatMessage } from "../../types/types";
+import { ChatMessage } from "../../components/types/types";
 
 type Props = {
   roomId: number;

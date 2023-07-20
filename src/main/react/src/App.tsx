@@ -4,17 +4,20 @@ import { UserProvider } from "./UserProvider";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import AppLayout from "./layout/AppLayout";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <ErrorBoundary>
         <UserProvider>
-          <AppLayout>
-            <AppRoutes />
-          </AppLayout>
+          <BrowserRouter>
+            <AppLayout>
+              <AppRoutes />
+            </AppLayout>
+          </BrowserRouter>
         </UserProvider>
-      </BrowserRouter>
+      </ErrorBoundary>
     </>
   );
 }
