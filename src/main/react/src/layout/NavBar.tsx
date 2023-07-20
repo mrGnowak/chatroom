@@ -4,7 +4,7 @@ import { MenuProps } from "antd";
 import { Menu } from "antd";
 import { useUser } from "../UserProvider";
 
-function NavBar() {
+export default function NavBar() {
   const user = useUser();
   const [current, setCurrent] = useState("mail");
 
@@ -76,5 +76,3 @@ function NavBar() {
     </>
   );
 }
-
-export default NavBar;

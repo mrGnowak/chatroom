@@ -1,14 +1,20 @@
+import { Layout } from "antd";
 import "./App.css";
-import "./components/chatbox/ChatContentStyle.css";
-import Routes from "./routes/Routes";
 import { UserProvider } from "./UserProvider";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import AppLayout from "./layout/AppLayout";
 
 function App() {
   return (
     <>
-      <UserProvider>
-        <Routes />
-      </UserProvider>
+      <BrowserRouter>
+        <UserProvider>
+          <AppLayout>
+            <AppRoutes />
+          </AppLayout>
+        </UserProvider>
+      </BrowserRouter>
     </>
   );
 }

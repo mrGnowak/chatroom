@@ -15,10 +15,18 @@ export type SignInForm = {
     roomStyle: string;
   };
 
-  export type Message = {
+  export type ChatMessage = {
     mesId: number;
     roomId: number;
-    senderUserId: string;
+    senderUserId: number;
     text: string;
   };
   
+  export type Users = {
+    userId: number;
+    userName: string;
+    password: string;
+    email: string;
+  };
+  
+

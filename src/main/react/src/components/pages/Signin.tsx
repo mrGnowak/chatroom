@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
 import { SignInForm } from "../types/types";
 
-export default function SigninContent() {
+export default function Signin() {
   const [response, setResponse] = useState<string | undefined>();
 
   const save = (values: SignInForm) => {

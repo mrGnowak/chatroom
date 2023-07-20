@@ -5,7 +5,7 @@ import { useRefreshUser } from "../../UserProvider";
 import { LoginForm } from "../types/types";
 //import { useRefreshUser } from '../UserProvider';
 
-export default function LoginContent() {
+export default function Login() {
   const navigate = useNavigate();
   const refreshUser = useRefreshUser();
 

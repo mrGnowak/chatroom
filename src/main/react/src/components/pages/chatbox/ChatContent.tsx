@@ -1,12 +1,12 @@
 import { Avatar, Input, Layout, List, theme, Tooltip } from "antd";
 import React from "react";
-import { useUser } from "../../UserProvider";
-import { ChatMessage, Users } from "../types";
+import { useUser } from "../../../UserProvider";
 import "./ChatContentStyle.css";
 import { UserOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import ChatBoxContent from "./ChatBoxContent";
+import { ChatMessage, Users } from "../../types/types";
 
 export default function ChatContent() {
   const sessionUser = useUser();
