@@ -99,6 +99,15 @@ export default function ChatContent() {
           >
             {" "}
             <h4>Rooms lists:</h4>
+            <List itemLayout="horizontal">
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar style={{ marginTop: "20px" }} />}
+                  title={<a onClick={() => handleClick(-1)}>Public room</a>}
+                  description="Zacznij rozmowe!"
+                />
+              </List.Item>
+            </List>
             <List
               itemLayout="horizontal"
               dataSource={rooms}
@@ -137,7 +146,6 @@ export default function ChatContent() {
             }}
           >
             Serwer status: {connected ? "Połączono" : "Brak połączenia"}
-            {activeChatbox == -1}
             <ChatBoxContent roomId={activeChatbox} newMessage={newMessage} />
           </Content>
         </Col>
