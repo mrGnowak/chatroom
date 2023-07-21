@@ -44,10 +44,10 @@ public class ChatController {
         return userRepo.findAll();
     }
 
-    @GetMapping(value = "/message/private/{userId}/{roomId}")
-    public List<ChatMessage> returnMessagesPrivate(@PathVariable Long userId, @PathVariable Long roomId) {
-        System.out.println("private messages " + userId + " | " + roomId);
-        return chatService.getMessages(roomId, userId);
+    @GetMapping(value = "/message/private/{roomId}")
+    public List<ChatMessage> returnMessagesPrivate(@PathVariable Long roomId) {
+        System.out.println("private messages  | " + roomId);
+        return chatService.getMessages(roomId);
     }
 
     @PostMapping(value = "/send")

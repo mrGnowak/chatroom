@@ -40,24 +40,16 @@ public class ChatService {
 
     public void save(ChatMessage chatMessage) {
         chatMessageRepo.save(chatMessage);
-        socketTextHandler.SendAll();
+        // socketTextHandler.SendAll();
     }
 
-    public List<ChatMessage> getMessages(Long roomId, Long userId) {
-        // if (roomId.equals(null)) {
-        // chatMessages = chatMessageRepo.findFirst100ByToUserOrderByIdDesc(userId);
-        // } else {
-        // chatMessages =
-        // chatMessageRepo.findFirst100ByRoomIdAndSenderUserIdOrderByIdDesc(
-        // roomId, userId);
-        // }
-        // return chatMessages;
-        return null;
+    public List<ChatMessage> getMessages(Long roomId) {
+        if (roomId.equals(null)) {
+            return null;
+        } else {
+            chatMessages = chatMessageRepo.findFirst100ByRoomIdOrderByMesIdDesc(
+                    roomId);
+            return chatMessages;
+        }
     }
-
-    // public ArrayList<Rooms> getAllRooms() {
-    // logger.info(userRepo.findAllByUserId(1L).toString());
-    // return userRepo.findAllByUserId(1L);
-    //
-    // }
 }

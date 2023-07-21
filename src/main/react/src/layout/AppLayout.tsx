@@ -15,13 +15,19 @@ export default function AppLayout({ children }: React.PropsWithChildren) {
         <Header>
           <NavBar />
         </Header>
-        <Content style={{ padding: "0 50px", marginTop: "50px" }}>
+        <Content
+          style={{
+            padding: "0 50px",
+            marginTop: "50px",
+          }}
+        >
           <Layout>
             <Content
               style={{
                 padding: "0 24px",
                 minHeight: "700px",
                 background: colorBgContainer,
+                maxWidth: "800px",
               }}
             >
               {children}

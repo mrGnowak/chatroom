@@ -32,10 +32,9 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <>
-          <h2>Oops, there is an error!</h2>
-          <Button onClick={() => this.setState({ hasError: false })}>
-            Try again?
-          </Button>
+          <h2>Oops, there is an error! Try to login or back do home page. </h2>
+          <Button href={"/login"}>Login</Button>
+          <Button href={"/"}>Home page</Button>
         </>
       );
     }

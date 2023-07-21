@@ -24,7 +24,7 @@ export default function ChatBoxContent({ roomId, newMessage }: Props) {
   const currentUser = sessionUser ? sessionUser.id : undefined;
   //messages for room
   const getMessages = () =>
-    fetch("api/chat/message/private/" + currentUser + "/" + roomId, {
+    fetch("api/chat/message/private/" + roomId, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -35,20 +35,6 @@ export default function ChatBoxContent({ roomId, newMessage }: Props) {
 
   React.useEffect(() => {
     getMessages();
-  }, [roomId]);
-  //get all created user's rooms
-  const getRooms = () =>
-    fetch("api/chat/getRooms/" + currentUser, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setMessages(data.reverse() as ChatMessage[]);
-      });
-
-  React.useEffect(() => {
-    getRooms();
   }, [roomId]);
 
   function sendMessage() {
@@ -65,7 +51,7 @@ export default function ChatBoxContent({ roomId, newMessage }: Props) {
       body: JSON.stringify({
         text: message,
         senderUserId: sessionUser?.id,
-        roomId: 1, //Tested value for only room 1
+        roomId: roomId,
       }),
     })
       .then((response) => response.text)
@@ -83,7 +69,7 @@ export default function ChatBoxContent({ roomId, newMessage }: Props) {
 
   return (
     <>
-      <div id="content-chat" style={{ height: "450px", overflow: "auto" }}>
+      <div id="content-chat" style={{ height: "530px", overflow: "auto" }}>
         <div style={{ position: "sticky", bottom: 0 }}>
           <section>
             <div style={{ display: "flex", flexFlow: "column wrap" }}>
