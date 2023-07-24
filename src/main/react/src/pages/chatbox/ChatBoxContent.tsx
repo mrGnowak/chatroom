@@ -10,9 +10,10 @@ import { ChatMessage } from "../../components/types/types";
 type Props = {
   roomId: number;
   newMessage: ChatMessage | undefined;
+  client: any;
 };
 
-export default function ChatBoxContent({ roomId, newMessage }: Props) {
+export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
   const [message, setMessage] = React.useState<string | undefined>();
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const bottomRef = React.useRef<any>(null);
@@ -37,7 +38,7 @@ export default function ChatBoxContent({ roomId, newMessage }: Props) {
     getMessages();
   }, [roomId]);
 
-  function sendMessage() {
+  function senddMessage() {
     if (
       sessionUser?.id === undefined ||
       message === undefined ||
@@ -45,27 +46,24 @@ export default function ChatBoxContent({ roomId, newMessage }: Props) {
     ) {
       return;
     }
-    fetch("api/chat/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    client.publish({
+      destination: "/app/sendPublic",
       body: JSON.stringify({
         text: message,
         senderUserId: sessionUser?.id,
         roomId: roomId,
       }),
-    })
-      .then((response) => response.text)
-      .then(() => setMessage(""))
-      .then((data) => console.log(data));
+    });
   }
+
   React.useEffect(() => {
     // 👇️ scroll to bottom every time messages change
     bottomRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages]);
 
-  React.useEffect(() => {
-    newMessage ? setMessages([...messages, newMessage]) : undefined;
-  }, [messages, newMessage]);
+  //React.useEffect(() => {
+  //  newMessage ? setMessages([...messages, newMessage]) : undefined;
+  //}, [messages, newMessage]);
 
   return (
     <>
@@ -112,13 +110,13 @@ export default function ChatBoxContent({ roomId, newMessage }: Props) {
         <Input.Search
           enterButton="Send"
           size="large"
-          onSearch={sendMessage}
+          onSearch={senddMessage}
           onChange={onChange}
           value={message}
         />
       </div>
       <div>
-        testowa wiadomosć {roomId}{" "}
+        testowa wiadomosć {roomId}
         <Button onClick={getMessages}>Refresh</Button>
       </div>
     </>
