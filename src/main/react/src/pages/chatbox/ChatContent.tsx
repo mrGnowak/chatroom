@@ -1,14 +1,4 @@
-import {
-  Affix,
-  Avatar,
-  Col,
-  Input,
-  Layout,
-  List,
-  Row,
-  theme,
-  Tooltip,
-} from "antd";
+import { Avatar, Col, List, Row, theme } from "antd";
 import React from "react";
 import { useUser } from "../../UserProvider";
 import "./ChatContentStyle.css";
@@ -23,7 +13,6 @@ import SockJS from "sockjs-client";
 export default function ChatContent() {
   const sessionUser = useUser();
   const [newMessage, setNewMessage] = React.useState<ChatMessage>();
-  const [temp, setTemp] = React.useState<String>();
   const [users, setUsers] = React.useState<Users[]>([]);
   const [rooms, setRooms] = React.useState<Room[]>([]);
   const websocketRef = React.useRef<any>();
@@ -44,8 +33,7 @@ export default function ChatContent() {
       //  console.log(message);
       //});
       client.subscribe("/topic/sendPublic", (message: any) => {
-        setNewMessage(message.body as ChatMessage);
-        setTemp(message.body);
+        setNewMessage(JSON.parse(message.body) as ChatMessage);
         console.log(message.body);
       });
     },
@@ -142,8 +130,8 @@ export default function ChatContent() {
               width: "550px",
             }}
           >
-            Serwer status: {connected ? "Połączono" : "Brak połączenia"} {"231"}
-            {newMessage?.text} {temp}
+            Serwer status: {connected ? "Połączono     " : "Brak połączenia"}
+            Nowa wiadomość: {newMessage?.text}
             <ChatBoxContent
               roomId={activeChatbox}
               newMessage={newMessage}
