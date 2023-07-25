@@ -33,7 +33,13 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
       .then((data) => {
         setMessages(data.reverse() as ChatMessage[]);
       });
-
+  React.useEffect(() => {
+    console.log(newMessage);
+    if (newMessage == undefined) {
+      return;
+    }
+    setMessages((messages) => [...messages, newMessage]);
+  }, [newMessage]);
   React.useEffect(() => {
     getMessages();
   }, [roomId]);
