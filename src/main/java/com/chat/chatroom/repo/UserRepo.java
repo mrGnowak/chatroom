@@ -11,12 +11,15 @@ import org.springframework.stereotype.Repository;
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.model.Rooms;
 
-@Repository
 public interface UserRepo extends JpaRepository<AppUser, Long> {
 
     AppUser findByEmail(String email);
 
     AppUser findByUserName(String userName);
+
+    boolean existsByUserName(String userName);
+
+    boolean existsByEmail(String email);
 
     List<AppUser> findByUserNameContaining(String userName);
 

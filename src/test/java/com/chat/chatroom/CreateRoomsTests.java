@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import com.chat.chatroom.model.AppUser;
+import com.chat.chatroom.dto.RegisterUserDto;
 import com.chat.chatroom.model.RoomPrivacyEnum;
 import com.chat.chatroom.model.Rooms;
 import com.chat.chatroom.repo.RoomsRepo;
@@ -22,9 +22,6 @@ import com.chat.chatroom.service.UserService;
 @AutoConfigureTestDatabase
 
 class CreateRoomsTests {
-
-    private static SessionFactory sessionFactory;
-    private Session session;
 
     @Autowired
     private RoomsRepo roomsRepo;
@@ -47,8 +44,7 @@ class CreateRoomsTests {
     @DirtiesContext
     void createRooms() {
 
-        var user1 = new AppUser();
-        user1.setUserId(1L);
+        RegisterUserDto user1 = new RegisterUserDto();
         user1.setUserName("user1");
         user1.setPassword("1234");
         user1.setEmail("user1@u.pl");
@@ -87,8 +83,7 @@ class CreateRoomsTests {
 
     @Test
     public void testAddCreatedRoomToCreatdUser() {
-        var user1 = new AppUser();
-        user1.setUserId(1L);
+        RegisterUserDto user1 = new RegisterUserDto();
         user1.setUserName("user1");
         user1.setPassword("1234");
         user1.setEmail("user1@u.pl");

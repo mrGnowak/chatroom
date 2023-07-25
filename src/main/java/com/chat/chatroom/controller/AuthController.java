@@ -80,12 +80,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", consumes = { "*/*" })
-    public String register(@NonNull @NotBlank @RequestBody RegisterUserDto regUserDto) {
-        AppUser user = new AppUser();
-        user.setEmail(regUserDto.getEmail());
-        user.setPassword(regUserDto.getPassword());
-        user.setUserName(regUserDto.getUserName());
-        return userService.saveNewUser(user);
+    public String register(@RequestBody RegisterUserDto regUserDto) {
+        return userService.saveNewUser(regUserDto);
     }
 
     @PostMapping(value = "/logout")

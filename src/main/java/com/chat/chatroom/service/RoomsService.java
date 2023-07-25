@@ -17,8 +17,6 @@ public class RoomsService {
     @Autowired
     private UserRepo userRepo;
 
-    private Rooms rooms;
-
     Logger logger = LoggerFactory.getLogger(RoomsService.class);
 
     public boolean checkIsPMRoomExist(Long userId, Long toUserId) {

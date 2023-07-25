@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.chat.chatroom.dto.RegisterUserDto;
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.repo.UserRepo;
 
@@ -21,11 +22,15 @@ public class UserService {
     @Autowired
     private PasswordEncoder globalPasswordEncoder;
 
-    public String saveNewUser(AppUser user) {
-        if (checkUserExistUserName(user)) {
-            if (checkUserExistEmail(user)) {
-                String hashPass = globalPasswordEncoder.encode(user.getPassword());
+    public String saveNewUser(RegisterUserDto regUser) {
+        if (!userRepo.existsByUserName(regUser.getUserName())) {
+            if (!userRepo.existsByEmail(regUser.getEmail())) {
+                String hashPass = globalPasswordEncoder.encode(regUser.getPassword());
+                regUser.setPassword(hashPass);
+                AppUser user = new AppUser();
+                user.setEmail(regUser.getEmail());
                 user.setPassword(hashPass);
+                user.setUserName(regUser.getUserName());
                 userRepo.save(user);
 
                 System.out.println("Created!");
