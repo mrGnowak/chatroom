@@ -15,7 +15,6 @@ export default function ChatContent() {
   const [newMessage, setNewMessage] = React.useState<ChatMessage>();
   const [users, setUsers] = React.useState<Users[]>([]);
   const [rooms, setRooms] = React.useState<Room[]>([]);
-  const websocketRef = React.useRef<any>();
   const [activeChatbox, setActiveChatbox] = React.useState<number>(-1);
   const [connected, setConnected] = React.useState<boolean>(false);
   const {
@@ -130,11 +129,13 @@ export default function ChatContent() {
               width: "550px",
             }}
           >
-            Serwer status: {connected ? "Połączono     " : "Brak połączenia"}
+            Serwer status: {connected ? "Połączono " : "Brak połączenia "}
             Nowa wiadomość: {newMessage?.text}
             <ChatBoxContent
               roomId={activeChatbox}
-              newMessage={newMessage}
+              newMessage={
+                newMessage?.roomId == activeChatbox ? newMessage : undefined
+              }
               client={client}
             />
           </Content>

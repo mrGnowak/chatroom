@@ -38,13 +38,19 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
     if (newMessage == undefined) {
       return;
     }
-    setMessages((messages) => [...messages, newMessage]);
+    const lastMessage = messages[messages.length - 1];
+    if (
+      !lastMessage ||
+      (newMessage.mesId !== lastMessage.mesId && newMessage.roomId == roomId)
+    ) {
+      setMessages((messages) => [...messages, newMessage]);
+    }
   }, [newMessage]);
   React.useEffect(() => {
     getMessages();
   }, [roomId]);
 
-  function senddMessage() {
+  function sendMessage() {
     if (
       sessionUser?.id === undefined ||
       message === undefined ||
@@ -60,16 +66,13 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
         roomId: roomId,
       }),
     });
+    setMessage("");
   }
 
   React.useEffect(() => {
     // 👇️ scroll to bottom every time messages change
     bottomRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages]);
-
-  //React.useEffect(() => {
-  //  newMessage ? setMessages([...messages, newMessage]) : undefined;
-  //}, [messages, newMessage]);
 
   return (
     <>
@@ -116,7 +119,7 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
         <Input.Search
           enterButton="Send"
           size="large"
-          onSearch={senddMessage}
+          onSearch={sendMessage}
           onChange={onChange}
           value={message}
         />
