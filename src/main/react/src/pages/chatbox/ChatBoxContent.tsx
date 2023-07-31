@@ -59,7 +59,7 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
       return;
     }
     client.publish({
-      destination: "/app/sendPublic",
+      destination: "/secured/room/sendMesage", //"/user/" + sessionUser.id + "/sendMessage", //"/secured/user/sendMessage",
       body: JSON.stringify({
         text: message,
         senderUserId: sessionUser?.id,
