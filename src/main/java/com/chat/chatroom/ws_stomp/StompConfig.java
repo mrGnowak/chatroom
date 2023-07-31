@@ -1,4 +1,4 @@
-package com.chat.chatroom.stomp;
+package com.chat.chatroom.ws_stomp;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -12,13 +12,14 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic", "/queue");
+        config.enableSimpleBroker("/secured/user/queue/specific-user", "/topic");
         config.setApplicationDestinationPrefixes("/app");
+        config.setUserDestinationPrefix("/secured/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/secured/room").setAllowedOriginPatterns("*").withSockJS();
 
     }
 }

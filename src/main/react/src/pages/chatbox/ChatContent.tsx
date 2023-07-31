@@ -21,21 +21,29 @@ export default function ChatContent() {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const sockUrl = "http://localhost:8080/websocket";
+  const sockUrl = "http://localhost:8080/secured/room";
   const client = Stomp.over(new SockJS(sockUrl));
+  var sessionId = "";
 
-  client.configure({
-    brokerURL: sockUrl,
-    onConnect: () => {
-      setConnected(true);
-      //client.subscribe("/queue/now", (message) => {
-      //  console.log(message);
-      //});
-      client.subscribe("/topic/sendPublic", (message: any) => {
+  client.connect({}, function (frame: any) {
+    var url = client.ws._transport.url;
+    url = url.replace("ws://localhost:8080/secured/room/", "");
+    url = url.replace("/websocket", "");
+    url = url.replace(/^[0-9]+\//, "");
+    console.log("Your current session is: " + url);
+    sessionId = url;
+    setConnected(true);
+    client.subscribe(
+      "/secured/user/queue/specific-user" + "-user" + sessionId,
+      (message: any) => {
         setNewMessage(JSON.parse(message.body) as ChatMessage);
         console.log(message.body);
-      });
-    },
+      }
+    );
+    client.subscribe("/topic/sendPublic", (message: any) => {
+      setNewMessage(JSON.parse(message.body) as ChatMessage);
+      console.log(message.body);
+    });
   });
   client.activate();
 

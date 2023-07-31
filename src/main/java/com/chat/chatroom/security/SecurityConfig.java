@@ -63,7 +63,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/chat/**").permitAll()
                         .requestMatchers("/api/chat/getRooms/**").permitAll()
-                        // .requestMatchers("/chat").permitAll()
                         .requestMatchers("/websocket/**").authenticated()
                         .requestMatchers("/api/auth/getUser").authenticated()
                         .requestMatchers("/api/auth/login").permitAll()

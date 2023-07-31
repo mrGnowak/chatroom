@@ -1,4 +1,4 @@
-package com.chat.chatroom.stomp;
+package com.chat.chatroom.ws_stomp;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.RequestMapping;

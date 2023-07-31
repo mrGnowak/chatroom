@@ -46,7 +46,6 @@ public class ChatController {
 
     @GetMapping(value = "/message/private/{roomId}")
     public List<ChatMessage> returnMessagesPrivate(@PathVariable Long roomId) {
-        System.out.println("private messages  | " + roomId);
         return chatService.getMessages(roomId);
     }
 
@@ -57,16 +56,12 @@ public class ChatController {
 
     @GetMapping(value = "/getUserRooms/{userId}")
     public Set<Rooms> findUserRooms(@PathVariable Long userId) {
-
-        System.out.println(userRepo.findRoomsByUserId(userId));
         return userRepo.findRoomsByUserId(userId);
 
     }
 
     @GetMapping(value = "/getUsersInRoom/{roomId}")
     public List<AppUser> findusersInRoom(@PathVariable Long roomId) {
-
-        System.out.println(userRepo.findUsersByRoomId(roomId));
         return userRepo.findUsersByRoomId(roomId);
     }
 
