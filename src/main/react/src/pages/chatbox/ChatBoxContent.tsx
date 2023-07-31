@@ -33,6 +33,7 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
       .then((data) => {
         setMessages(data.reverse() as ChatMessage[]);
       });
+
   React.useEffect(() => {
     console.log(newMessage);
     if (newMessage == undefined) {
@@ -58,14 +59,24 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
     ) {
       return;
     }
-    client.publish({
-      destination: "/secured/room/sendMesage", //"/user/" + sessionUser.id + "/sendMessage", //"/secured/user/sendMessage",
-      body: JSON.stringify({
-        text: message,
-        senderUserId: sessionUser?.id,
-        roomId: roomId,
-      }),
-    });
+    roomId === -1
+      ? client.publish({
+          destination: "/app/sendPublic",
+          body: JSON.stringify({
+            text: message,
+            senderUserId: sessionUser?.id,
+            roomId: roomId,
+          }),
+        })
+      : client.publish({
+          destination: "/app/sendMessage",
+          body: JSON.stringify({
+            text: message,
+            senderUserId: sessionUser?.id,
+            roomId: roomId,
+          }),
+        });
+
     setMessage("");
   }
 

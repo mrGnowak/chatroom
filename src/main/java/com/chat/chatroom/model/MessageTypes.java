@@ -1,4 +1,4 @@
-package com.chat.chatroom.stomp;
+package com.chat.chatroom.model;
 
 public enum MessageTypes {
     MESSAGE,

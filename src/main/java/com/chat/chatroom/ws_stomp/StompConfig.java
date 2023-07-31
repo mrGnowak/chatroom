@@ -1,4 +1,4 @@
-package com.chat.chatroom.stomp;
+package com.chat.chatroom.ws_stomp;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -12,8 +12,8 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/secured/user/queue/specific-user");
-        config.setApplicationDestinationPrefixes("/spring-security-mvc-socket");
+        config.enableSimpleBroker("/secured/user/queue/specific-user", "/topic");
+        config.setApplicationDestinationPrefixes("/app");
         config.setUserDestinationPrefix("/secured/user");
     }
 
