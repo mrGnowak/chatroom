@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, theme } from "antd";
+import { Layout, Row, theme } from "antd";
 import "./layout.css";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import { footerContent } from "../components/types/FooterContent";
@@ -15,25 +15,27 @@ export default function AppLayout({ children }: React.PropsWithChildren) {
         <Header>
           <NavBar />
         </Header>
+
         <Content
           style={{
-            padding: "0 50px",
-            marginTop: "50px",
+            minHeight: "800px",
+            background: colorBgContainer,
+            width: "100%",
+            position: "relative",
           }}
         >
-          <Layout>
-            <Content
-              style={{
-                padding: "0 24px",
-                minHeight: "700px",
-                background: colorBgContainer,
-                maxWidth: "800px",
-              }}
-            >
-              {children}
-            </Content>
-          </Layout>
+          <Content
+            style={{
+              paddingLeft: "60px",
+              paddingRight: "60px",
+              paddingTop: "30px",
+              paddingBottom: "30px",
+            }}
+          >
+            {children}
+          </Content>
         </Content>
+
         <Footer style={{ textAlign: "center" }}>{footerContent}</Footer>
       </Layout>
     </>

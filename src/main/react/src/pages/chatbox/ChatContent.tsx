@@ -3,7 +3,7 @@ import React from "react";
 import { useUser } from "../../UserProvider";
 import "./ChatContentStyle.css";
 import { UserOutlined } from "@ant-design/icons";
-import { Content } from "antd/es/layout/layout";
+import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import ChatBoxContent from "./ChatBoxContent";
 import { ChatMessage, Room, Users } from "../../components/types/types";
@@ -77,68 +77,71 @@ export default function ChatContent() {
   }
   return (
     <>
-      <Row style={{ width: "850px" }}>
-        <Col span={3}>
-          <Sider
-            style={{
-              background: colorBgContainer,
-              padding: "24px 24px",
-              maxHeight: "700px",
-              overflow: "auto",
-              height: "700px",
-            }}
-            width={250}
-          >
-            {" "}
-            <h4>Rooms lists:</h4>
-            <List itemLayout="horizontal">
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar style={{ marginTop: "20px" }} />}
-                  title={<a onClick={() => handleClick(-1)}>Public room</a>}
-                  description="Zacznij rozmowe!"
-                />
-              </List.Item>
-            </List>
-            <List
-              itemLayout="horizontal"
-              dataSource={rooms}
-              renderItem={(room, index) =>
-                sessionUser ? (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          style={{ marginTop: "20px" }}
-                          icon={<UserOutlined />}
-                        />
-                      }
-                      title={
-                        <a onClick={() => handleClick(room.roomId)}>
-                          {room.roomName}
-                        </a>
-                      }
-                      description="Zacznij rozmowe!"
-                    />
-                  </List.Item>
-                ) : null
-              }
-            />
-          </Sider>
+      <Row
+        style={{
+          maxWidth: "950px",
+          margin: "30px",
+        }}
+      >
+        <Col
+          span={6}
+          style={{
+            background: colorBgContainer,
+            //margin: "24px",
+            padding: "24px 24px",
+            maxHeight: "700px",
+            overflow: "auto",
+            height: "700px",
+            width: "250px",
+            backgroundColor: "#E2E2E2",
+          }}
+        >
+          {" "}
+          <h4>Rooms lists:</h4>
+          <List itemLayout="horizontal">
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar style={{ marginTop: "20px" }} />}
+                title={<a onClick={() => handleClick(-1)}>Public room</a>}
+                description="Zacznij rozmowe!"
+              />
+            </List.Item>
+          </List>
+          <List
+            itemLayout="horizontal"
+            dataSource={rooms}
+            renderItem={(room, index) =>
+              sessionUser ? (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        style={{ marginTop: "20px" }}
+                        icon={<UserOutlined />}
+                      />
+                    }
+                    title={
+                      <a onClick={() => handleClick(room.roomId)}>
+                        {room.roomName}
+                      </a>
+                    }
+                    description="Zacznij rozmowe!"
+                  />
+                </List.Item>
+              ) : null
+            }
+          />
         </Col>
-        <Col span={20} push={4}>
+
+        <Col span={18}>
           <Content
             style={{
               padding: "24px 24px",
               height: "700px",
               background: colorBgContainer,
-              marginLeft: "10px",
-              maxWidth: "550px",
-              width: "550px",
+              backgroundColor: "#EFEFEF",
             }}
           >
-            Serwer status: {connected ? "Połączono " : "Brak połączenia "}
-            Nowa wiadomość: {newMessage?.text}
             <ChatBoxContent
               roomId={activeChatbox}
               newMessage={
@@ -146,6 +149,8 @@ export default function ChatContent() {
               }
               client={client}
             />
+            Server status: {connected ? "Connected " : "Disconected"}
+            Nowa wiadomość: {newMessage?.text}
           </Content>
         </Col>
       </Row>

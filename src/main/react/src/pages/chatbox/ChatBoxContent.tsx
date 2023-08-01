@@ -135,10 +135,6 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
           value={message}
         />
       </div>
-      <div>
-        testowa wiadomosć {roomId}
-        <Button onClick={getMessages}>Refresh</Button>
-      </div>
     </>
   );
 }
