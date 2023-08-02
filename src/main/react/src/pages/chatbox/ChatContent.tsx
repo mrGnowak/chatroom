@@ -1,8 +1,8 @@
-import { Avatar, Col, List, Row, theme } from "antd";
+import { Avatar, Col, Input, List, Modal, Row, theme } from "antd";
 import React from "react";
 import { useUser } from "../../UserProvider";
 import "./ChatContentStyle.css";
-import { UserOutlined } from "@ant-design/icons";
+import { PlusSquareOutlined, UserOutlined } from "@ant-design/icons";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import ChatBoxContent from "./ChatBoxContent";
@@ -10,6 +10,10 @@ import { ChatMessage, Room, Users } from "../../components/types/types";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
+interface FieldData {
+  id: number;
+  value: string;
+}
 export default function ChatContent() {
   const sessionUser = useUser();
   const [newMessage, setNewMessage] = React.useState<ChatMessage>();
@@ -75,6 +79,30 @@ export default function ChatContent() {
   function handleClick(id: number) {
     setActiveChatbox(id);
   }
+
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [addRoomName, setAddRoomName] = React.useState<string | undefined>();
+  const [addRoomUser, setAddRoomUser] = React.useState<string | undefined>();
+  //const handleRoomNameChange = (event: React.FormEvent<HTMLInputElement>) => {
+  //  setAddRoomName(event.currentTarget.value);
+  //};
+  //const handleUserChange = (event: React.FormEvent<HTMLInputElement>) => {
+  //  setAddRoomUser(event.currentTarget.value);
+  //};
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    console.log(addRoomName + "   " + addRoomUser);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <Row
@@ -87,7 +115,6 @@ export default function ChatContent() {
           span={6}
           style={{
             background: colorBgContainer,
-            //margin: "24px",
             padding: "24px 24px",
             maxHeight: "700px",
             overflow: "auto",
@@ -96,8 +123,27 @@ export default function ChatContent() {
             backgroundColor: "#E2E2E2",
           }}
         >
-          {" "}
-          <h4>Rooms lists:</h4>
+          <h4>
+            <Row>
+              <Col flex="auto" style={{ margin: "15px" }}>
+                Rooms lists:
+              </Col>
+              <Col flex="15px" style={{ margin: "15px" }}>
+                <PlusSquareOutlined onClick={showModal} rev={undefined} />
+              </Col>
+            </Row>
+          </h4>
+          <Modal
+            title="Create room"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <p>Room name</p>
+            <Input size="large" value={addRoomName} />
+            <p>Invite user</p>
+            <Input size="large" />
+          </Modal>
           <List itemLayout="horizontal">
             <List.Item>
               <List.Item.Meta
@@ -117,7 +163,7 @@ export default function ChatContent() {
                     avatar={
                       <Avatar
                         style={{ marginTop: "20px" }}
-                        icon={<UserOutlined />}
+                        icon={<UserOutlined rev={undefined} />}
                       />
                     }
                     title={
@@ -142,6 +188,12 @@ export default function ChatContent() {
               backgroundColor: "#EFEFEF",
             }}
           >
+            <h4 style={{ margin: "5px" }}>
+              {rooms?.map((room) =>
+                activeChatbox === room.roomId ? room.roomName : ""
+              )}
+              {activeChatbox === -1 ? "Public room" : ""}
+            </h4>
             <ChatBoxContent
               roomId={activeChatbox}
               newMessage={

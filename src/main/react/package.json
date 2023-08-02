@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.4",
     "@stomp/stompjs": "^7.0.0",
     "@types/sockjs-client": "^1.5.1",
     "antd": "^5.3.1",

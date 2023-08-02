@@ -106,7 +106,7 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
                       <div style={{ display: "inline" }}>
                         <Avatar
                           size="small"
-                          icon={<UserOutlined />}
+                          icon={<UserOutlined rev={undefined} />}
                           style={{ marginTop: "" }}
                         />
                       </div>
