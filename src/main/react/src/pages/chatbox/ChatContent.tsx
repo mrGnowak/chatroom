@@ -180,7 +180,7 @@ export default function ChatContent() {
         </Col>
 
         <Col span={18}>
-          <Content
+          <div
             style={{
               padding: "24px 24px",
               height: "700px",
@@ -203,7 +203,7 @@ export default function ChatContent() {
             />
             Server status: {connected ? "Connected " : "Disconected"}
             Nowa wiadomość: {newMessage?.text}
-          </Content>
+          </div>
         </Col>
       </Row>
     </>

@@ -14,10 +14,6 @@ export default function Home() {
     onConnect: () => {
       setConnectedMessage("Connected");
 
-      //client.subscribe("/queue/now", (message) => {
-      //  console.log(message);
-      //});
-
       client.subscribe("/topic/test", (message: any) => {
         setMessage(message.body);
       });
