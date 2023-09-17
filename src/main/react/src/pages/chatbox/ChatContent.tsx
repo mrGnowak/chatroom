@@ -1,15 +1,19 @@
-import { Avatar, Col, List, Row, theme } from "antd";
+import { Avatar, Col, Input, List, Modal, Row, theme } from "antd";
 import React from "react";
 import { useUser } from "../../UserProvider";
 import "./ChatContentStyle.css";
-import { UserOutlined } from "@ant-design/icons";
-import { Content } from "antd/es/layout/layout";
+import { PlusSquareOutlined, UserOutlined } from "@ant-design/icons";
+import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import ChatBoxContent from "./ChatBoxContent";
 import { ChatMessage, Room, Users } from "../../components/types/types";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
+interface FieldData {
+  id: number;
+  value: string;
+}
 export default function ChatContent() {
   const sessionUser = useUser();
   const [newMessage, setNewMessage] = React.useState<ChatMessage>();
@@ -75,70 +79,117 @@ export default function ChatContent() {
   function handleClick(id: number) {
     setActiveChatbox(id);
   }
+
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [addRoomName, setAddRoomName] = React.useState<string | undefined>();
+  const [addRoomUser, setAddRoomUser] = React.useState<string | undefined>();
+  //const handleRoomNameChange = (event: React.FormEvent<HTMLInputElement>) => {
+  //  setAddRoomName(event.currentTarget.value);
+  //};
+  //const handleUserChange = (event: React.FormEvent<HTMLInputElement>) => {
+  //  setAddRoomUser(event.currentTarget.value);
+  //};
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    console.log(addRoomName + "   " + addRoomUser);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
-      <Row style={{ width: "850px" }}>
-        <Col span={3}>
-          <Sider
-            style={{
-              background: colorBgContainer,
-              padding: "24px 24px",
-              maxHeight: "700px",
-              overflow: "auto",
-              height: "700px",
-            }}
-            width={250}
+      <Row style={{ width: "100%" }}>
+        <Col
+          span={6}
+          style={{
+            background: colorBgContainer,
+            padding: "24px 24px",
+            overflow: "auto",
+            height: "calc(100vh - 131px)",
+            width: "100%",
+
+            backgroundColor: "#E2E2E2",
+          }}
+        >
+          <h4>
+            <Row>
+              <Col flex="auto" style={{ margin: "15px" }}>
+                Rooms lists:
+              </Col>
+              <Col flex="15px" style={{ margin: "15px" }}>
+                <PlusSquareOutlined onClick={showModal} rev={undefined} />
+              </Col>
+            </Row>
+          </h4>
+          <Modal
+            title="Create room"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
           >
-            {" "}
-            <h4>Rooms lists:</h4>
-            <List itemLayout="horizontal">
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar style={{ marginTop: "20px" }} />}
-                  title={<a onClick={() => handleClick(-1)}>Public room</a>}
-                  description="Zacznij rozmowe!"
-                />
-              </List.Item>
-            </List>
-            <List
-              itemLayout="horizontal"
-              dataSource={rooms}
-              renderItem={(room, index) =>
-                sessionUser ? (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          style={{ marginTop: "20px" }}
-                          icon={<UserOutlined />}
-                        />
-                      }
-                      title={
-                        <a onClick={() => handleClick(room.roomId)}>
-                          {room.roomName}
-                        </a>
-                      }
-                      description="Zacznij rozmowe!"
-                    />
-                  </List.Item>
-                ) : null
-              }
-            />
-          </Sider>
+            <p>Room name</p>
+            <Input size="large" value={addRoomName} />
+            <p>Invite user</p>
+            <Input size="large" />
+          </Modal>
+          <List itemLayout="horizontal">
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar style={{ marginTop: "20px" }} />}
+                title={<a onClick={() => handleClick(-1)}>Public room</a>}
+                description="Zacznij rozmowe!"
+              />
+            </List.Item>
+          </List>
+          <List
+            itemLayout="horizontal"
+            dataSource={rooms}
+            renderItem={(room, index) =>
+              sessionUser ? (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        style={{ marginTop: "20px" }}
+                        icon={<UserOutlined rev={undefined} />}
+                      />
+                    }
+                    title={
+                      <a onClick={() => handleClick(room.roomId)}>
+                        {room.roomName}
+                      </a>
+                    }
+                    description="Zacznij rozmowe!"
+                  />
+                </List.Item>
+              ) : null
+            }
+          />
         </Col>
-        <Col span={20} push={4}>
-          <Content
+
+        <Col span={18}>
+          <div
             style={{
               padding: "24px 24px",
-              height: "700px",
+              height: "calc(100vh - 131px)",
+              width: "100%",
               background: colorBgContainer,
-              marginLeft: "10px",
-              maxWidth: "550px",
-              width: "550px",
+              backgroundColor: "#EFEFEF",
             }}
           >
-            Serwer status: {connected ? "Połączono " : "Brak połączenia "}
-            Nowa wiadomość: {newMessage?.text}
+            <h4 style={{ margin: "5px" }}>
+              {rooms?.map((room) =>
+                activeChatbox === room.roomId ? room.roomName : ""
+              )}
+              {activeChatbox === -1 ? "Public room" : ""}
+            </h4>
             <ChatBoxContent
               roomId={activeChatbox}
               newMessage={
@@ -146,7 +197,9 @@ export default function ChatContent() {
               }
               client={client}
             />
-          </Content>
+            Server status: {connected ? "Connected " : "Disconected"}
+            Nowa wiadomość: {newMessage?.text}
+          </div>
         </Col>
       </Row>
     </>

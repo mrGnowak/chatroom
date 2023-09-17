@@ -1,9 +1,10 @@
 import React from "react";
-import { Layout, theme } from "antd";
-import "./layout.css";
+import { Layout, Row, theme } from "antd";
+
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import { footerContent } from "../components/types/FooterContent";
 import NavBar from "./NavBar";
+import { Divider } from "rc-menu";
 
 export default function AppLayout({ children }: React.PropsWithChildren) {
   const {
@@ -15,25 +16,23 @@ export default function AppLayout({ children }: React.PropsWithChildren) {
         <Header>
           <NavBar />
         </Header>
-        <Content
-          style={{
-            padding: "0 50px",
-            marginTop: "50px",
-          }}
-        >
-          <Layout>
-            <Content
-              style={{
-                padding: "0 24px",
-                minHeight: "700px",
-                background: colorBgContainer,
-                maxWidth: "800px",
-              }}
-            >
-              {children}
-            </Content>
-          </Layout>
+
+        <Content>
+          <div
+            style={{
+              minHeight: `calc(100vh - 131px)`,
+              background: colorBgContainer,
+              //width: "50%",
+              width: "1000px",
+              position: "relative",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            {children}
+          </div>
         </Content>
+
         <Footer style={{ textAlign: "center" }}>{footerContent}</Footer>
       </Layout>
     </>

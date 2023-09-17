@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons";
+
 import { MenuProps } from "antd";
 import { Menu } from "antd";
 import { useUser } from "../UserProvider";
+import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons";
 
 export default function NavBar() {
   const user = useUser();
@@ -13,12 +14,12 @@ export default function NavBar() {
       {
         label: <a href="/">Home</a>,
         key: "home",
-        icon: <AppstoreOutlined />,
+        icon: <AppstoreOutlined rev={undefined} />,
       },
       {
         label: <a href="/chat">Chat</a>,
         key: "chat",
-        icon: <SettingOutlined />,
+        icon: <SettingOutlined rev={undefined} />,
       },
       ...(user == null
         ? [
@@ -39,7 +40,7 @@ export default function NavBar() {
                 </span>
               ),
               key: "user_options",
-              icon: <SettingOutlined />,
+              icon: <SettingOutlined rev={undefined} />,
               children: [
                 {
                   label: <a href="/changepassword">Change password</a>,

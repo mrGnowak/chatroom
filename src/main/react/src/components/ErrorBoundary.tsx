@@ -1,5 +1,4 @@
 import { Button } from "antd";
-import { Content } from "antd/es/layout/layout";
 import React, { Component } from "react";
 
 type Props = {
