@@ -4,7 +4,7 @@ import { UserOutlined } from "@ant-design/icons";
 import Input from "antd/es/input";
 import React from "react";
 import { useUser } from "../../UserProvider";
-import { Button } from "antd";
+import { Button, theme } from "antd";
 import { ChatMessage } from "../../components/types/types";
 
 type Props = {
@@ -19,10 +19,13 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
   const bottomRef = React.useRef<any>(null);
   const sessionUser = useUser();
 
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
   const onChange = (e: React.FormEvent<HTMLInputElement>) =>
     setMessage(e.currentTarget.value);
 
-  const currentUser = sessionUser ? sessionUser.id : undefined;
   //messages for room
   const getMessages = () =>
     fetch("api/chat/message/private/" + roomId, {
@@ -87,7 +90,16 @@ export default function ChatBoxContent({ roomId, newMessage, client }: Props) {
 
   return (
     <>
-      <div id="content-chat" style={{ height: "530px", overflow: "auto" }}>
+      <div
+        id="content-chat"
+        style={{
+          height: "calc(100vh - 291px)",
+          overflow: "auto",
+          background: colorBgContainer,
+          padding: "10px",
+          borderRadius: "10px",
+        }}
+      >
         <div style={{ position: "sticky", bottom: 0 }}>
           <section>
             <div style={{ display: "flex", flexFlow: "column wrap" }}>

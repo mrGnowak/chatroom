@@ -105,21 +105,16 @@ export default function ChatContent() {
 
   return (
     <>
-      <Row
-        style={{
-          maxWidth: "950px",
-          margin: "30px",
-        }}
-      >
+      <Row style={{ width: "100%" }}>
         <Col
           span={6}
           style={{
             background: colorBgContainer,
             padding: "24px 24px",
-            maxHeight: "700px",
             overflow: "auto",
-            height: "700px",
-            width: "250px",
+            height: "calc(100vh - 131px)",
+            width: "100%",
+
             backgroundColor: "#E2E2E2",
           }}
         >
@@ -183,7 +178,8 @@ export default function ChatContent() {
           <div
             style={{
               padding: "24px 24px",
-              height: "700px",
+              height: "calc(100vh - 131px)",
+              width: "100%",
               background: colorBgContainer,
               backgroundColor: "#EFEFEF",
             }}

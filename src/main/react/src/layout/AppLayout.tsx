@@ -22,12 +22,11 @@ export default function AppLayout({ children }: React.PropsWithChildren) {
             style={{
               minHeight: `calc(100vh - 131px)`,
               background: colorBgContainer,
-              width: "50%",
-              minWidth: "1000px",
+              //width: "50%",
+              width: "1000px",
               position: "relative",
               marginLeft: "auto",
               marginRight: "auto",
-              padding: "30px",
             }}
           >
             {children}

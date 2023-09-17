@@ -3,6 +3,9 @@ package com.chat.chatroom.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login", consumes = { "*/*" })
-    public Long login(@RequestBody LoginUserDto loginUser) {
+    public ResponseEntity<Long> login(@RequestBody LoginUserDto loginUser) {
         try {
             var credentials = new UsernamePasswordAuthenticationToken(loginUser.getUserName(),
                     loginUser.getPassword());
@@ -57,9 +60,9 @@ public class AuthController {
             getSession().setAttribute(
                     HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     securityContext);
-            return principial.getId();
+            return ResponseEntity.ok(principial.getId());
         } catch (Exception ex) {
-            return null;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 
