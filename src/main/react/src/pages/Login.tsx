@@ -33,7 +33,6 @@ export default function Login() {
 
   return (
     <>
-      <Title level={3}>LOG IN</Title>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -44,6 +43,9 @@ export default function Login() {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+        <Title style={{ marginTop: "0px" }} level={3}>
+          LOG IN
+        </Title>
         <Form.Item
           label="Username"
           name="userName"
