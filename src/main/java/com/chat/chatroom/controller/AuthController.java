@@ -20,6 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.chat.chatroom.dto.AppUserDto;
+import com.chat.chatroom.dto.ChangePassDto;
 import com.chat.chatroom.dto.LoginUserDto;
 import com.chat.chatroom.dto.RegisterUserDto;
 import com.chat.chatroom.model.AppUser;
@@ -94,8 +95,7 @@ public class AuthController {
     }
 
     @PutMapping(value = "/changepass")
-    public String changePass(@NonNull @NotBlank @RequestBody AppUser appUser) {
-        userService.updateUser(appUser);
-        return "Changed!";
+    public ResponseEntity<String> changePass(@NonNull @NotBlank @RequestBody ChangePassDto changePassDto) {
+        return userService.updateUser(changePassDto);
     }
 }

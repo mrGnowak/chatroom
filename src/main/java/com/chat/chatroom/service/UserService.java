@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.chat.chatroom.dto.ChangePassDto;
 import com.chat.chatroom.dto.RegisterUserDto;
 import com.chat.chatroom.model.AppUser;
 import com.chat.chatroom.repo.UserRepo;
@@ -41,6 +42,18 @@ public class UserService {
         } else {
             System.out.println("UserName is occupied");
             return "UserName is occupied!";
+        }
+    }
+
+    public ResponseEntity<String> updateUser(ChangePassDto changePassDto) {
+        AppUser newUser = userRepo.findById(changePassDto.getUserId()).get();
+        if (checkPasswordMatches(changePassDto.getPassword(),
+                userRepo.findById(changePassDto.getUserId()).get().getPassword())) {
+            newUser.setPassword(globalPasswordEncoder.encode(changePassDto.getNewPassword()));
+            userRepo.save(newUser);
+            return ResponseEntity.ok("Changed!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong password!");
         }
     }
 
@@ -80,13 +93,6 @@ public class UserService {
     public AppUser getUserById(Long userId) {
         var user = userRepo.findById(userId);
         return user.isPresent() ? user.get() : null;
-    }
-
-    public void updateUser(AppUser appUser) {
-        var userId = appUser.getUserId();
-        var newUser = userRepo.findById(userId).get();
-        newUser.setPassword(globalPasswordEncoder.encode(appUser.getPassword()));
-        userRepo.save(newUser);
     }
 
     public ResponseEntity<Object> getAllUsers() {

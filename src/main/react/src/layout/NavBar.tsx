@@ -16,13 +16,14 @@ export default function NavBar() {
         key: "home",
         icon: <AppstoreOutlined rev={undefined} />,
       },
-      {
-        label: <a href="/chat">Chat</a>,
-        key: "chat",
-        icon: <SettingOutlined rev={undefined} />,
-      },
+
       ...(user == null
         ? [
+            {
+              label: <a href="/login">Chat</a>,
+              key: "chat",
+              icon: <SettingOutlined rev={undefined} />,
+            },
             {
               label: <a href="/login">Log in</a>,
               key: "login",
@@ -34,6 +35,11 @@ export default function NavBar() {
           ]
         : [
             {
+              label: <a href="/chat">Chat</a>,
+              key: "chat",
+              icon: <SettingOutlined rev={undefined} />,
+            },
+            {
               label: (
                 <span>
                   Hello <b>{user.userName}</b>
@@ -43,7 +49,7 @@ export default function NavBar() {
               icon: <SettingOutlined rev={undefined} />,
               children: [
                 {
-                  label: <a href="/changepassword">Change password</a>,
+                  label: <a href="/changepass">Change password</a>,
                   key: "change_pass",
                 },
                 {

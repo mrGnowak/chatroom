@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signin from "../pages/Signin";
 import ChatContent from "../pages/chatbox/ChatContent";
+import ChangePass from "../pages/ChangePass";
 
 export default function AppRoutes() {
   const user = useUser();
@@ -18,6 +19,7 @@ export default function AppRoutes() {
       {<Route path="/logout" element={<Logout />} />}
       {<Route path="/signup" element={<Signin />} />}
       {<Route path="/chat" element={<ChatContent />} />}
+      {<Route path="/changepass" element={<ChangePass />} />}
     </Routes>
   );
 }
