@@ -47,7 +47,9 @@ public class UserService {
 
     public ResponseEntity<String> updateUser(ChangePassDto changePassDto) {
         AppUser newUser = userRepo.findById(changePassDto.getUserId()).get();
-        if (checkPasswordMatches(changePassDto.getPassword(),
+        if (changePassDto.getPassword().equals(changePassDto.getNewPassword())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("The same passwords!");
+        } else if (checkPasswordMatches(changePassDto.getPassword(),
                 userRepo.findById(changePassDto.getUserId()).get().getPassword())) {
             newUser.setPassword(globalPasswordEncoder.encode(changePassDto.getNewPassword()));
             userRepo.save(newUser);

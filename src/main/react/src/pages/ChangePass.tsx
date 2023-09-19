@@ -1,12 +1,33 @@
 import { useState } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, notification } from "antd";
 import Title from "antd/es/typography/Title";
 import { ChangePassword, SignInForm } from "../components/types/types";
 import { useUser } from "../UserProvider";
+import { useNavigate } from "react-router-dom";
 
 export default function ChangePass() {
   const [response, setResponse] = useState<string | undefined>();
   const user = useUser();
+  const navigate = useNavigate();
+
+  const [wrongPass, wrongPassHolder] = notification.useNotification();
+  const openWrongPass = () => {
+    wrongPass["error"]({
+      message: "Wrong password!",
+    });
+  };
+  const [samePass, samePassHolder] = notification.useNotification();
+  const openTheSamePass = () => {
+    samePass["error"]({
+      message: "New password cannot be the same as the current!",
+    });
+  };
+  const [success, successHolder] = notification.useNotification();
+  const openSuccess = () => {
+    success["success"]({
+      message: "Password has been changed!",
+    });
+  };
 
   const updatePass = (values: ChangePassword) => {
     const requestOptions = {
@@ -19,9 +40,17 @@ export default function ChangePass() {
       }),
     };
     fetch("api/auth/changepass", requestOptions)
-      .then((response) => response.text())
+      .then((response) => response.status)
       .then((data) => {
-        setResponse(data);
+        if (data === 401) {
+          openWrongPass();
+        } else if (data === 200) {
+          openSuccess();
+        } else if (data === 409) {
+          openTheSamePass();
+        } else {
+          console.log(data);
+        }
       });
   };
 
@@ -37,6 +66,9 @@ export default function ChangePass() {
 
   return (
     <>
+      {wrongPassHolder}
+      {successHolder}
+      {samePassHolder}
       <div style={{ padding: "25px" }}>
         <Title level={3}>Change password</Title>
         <Form
